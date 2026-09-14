@@ -38,6 +38,8 @@ dependencies:
   flutter_riverpod: ^2.6.1
   path_provider: ^2.1.6
   persistent_bottom_nav_bar_v2: ^6.4.0
+  dynamic_responsive_screen: ^1.0.0
+  lingo_easy: ^1.1.0
   
 
 dev_dependencies:
