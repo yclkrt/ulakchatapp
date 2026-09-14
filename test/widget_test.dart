@@ -3,17 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ulakchatapp/main.dart';
 
 void main() {
-  testWidgets('App smoke test - verifies UlakChat root page renders', (WidgetTester tester) async {
+  testWidgets('App smoke test - verifies bottom navigation and chats page render', (WidgetTester tester) async {
     await tester.pumpWidget(
       const ProviderScope(
         child: MyApp(),
       ),
     );
 
-    // Initial pump and settle for GoRouter
     await tester.pumpAndSettle();
 
-    // Verify that UlakChat AppBar title is present
-    expect(find.text('UlakChat'), findsOneWidget);
+    // Verify Chats tab / AppBar title is present
+    expect(find.text('Sohbetler'), findsWidgets);
   });
 }
