@@ -1,3 +1,4 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
@@ -21,20 +22,25 @@ class AuthSocialButton extends ConsumerWidget {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColors.lightTextPrimary,
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: EdgeInsets.symmetric(vertical: context.h(12)),
         side: BorderSide(color: AppColors.lightBorder),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(context.r(14)),
+        ),
         backgroundColor: AppColors.lightBackground,
       ),
       onPressed: onTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: iconSize),
-          const SizedBox(width: 8),
+          Icon(icon, size: context.w(iconSize)),
+          SizedBox(width: context.w(8)),
           Text(
             label,
-            style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontSize: context.sp(13.5),
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),

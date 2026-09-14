@@ -1,3 +1,4 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lingo_easy/lingo_easy.dart';
@@ -13,8 +14,8 @@ class AuthHeader extends ConsumerWidget {
     return Column(
       children: [
         Container(
-          width: 84,
-          height: 84,
+          width: context.w(84),
+          height: context.h(84),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: const LinearGradient(
@@ -31,7 +32,7 @@ class AuthHeader extends ConsumerWidget {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(3.0),
+            padding: EdgeInsets.all(context.w(3.0)),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -41,9 +42,9 @@ class AuthHeader extends ConsumerWidget {
                 child: Image.asset(
                   'assets/images/app_logo.png',
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
+                  errorBuilder: (context, error, stackTrace) => Icon(
                     Icons.chat_bubble_outline_rounded,
-                    size: 40,
+                    size: context.w(40),
                     color: AppColors.primary,
                   ),
                 ),
@@ -51,23 +52,26 @@ class AuthHeader extends ConsumerWidget {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: context.h(16)),
         Text(
           context.ln('app_name'),
           style: TextStyle(
-            fontSize: 28,
+            fontSize: context.sp(28),
             fontWeight: FontWeight.w800,
             letterSpacing: -0.5,
             color: AppColors.lightTextPrimary,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: context.h(6)),
         Text(
           isSignUp
               ? context.ln('join_us_and_start_messaging')
               : context.ln('access_your_chats_by_logging_into_your_account'),
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14, color: AppColors.lightTextSecondary),
+          style: TextStyle(
+            fontSize: context.sp(14),
+            color: AppColors.lightTextSecondary,
+          ),
         ),
       ],
     );

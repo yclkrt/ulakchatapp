@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lingo_easy/lingo_easy.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
 import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 
@@ -53,7 +54,9 @@ class AuthPrimaryButton extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        isSignUp ? 'Hesap Oluştur' : 'Giriş Yap',
+                        isSignUp
+                            ? context.ln('create_account')
+                            : context.ln('login'),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: context.sp(16),
