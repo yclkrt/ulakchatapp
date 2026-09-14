@@ -1,0 +1,16 @@
+{
+  "app_title": "UlakChat",
+  "chats": "Sohbetler",
+  "settings": "Ayarlar",
+  "search_placeholder": "Sohbetlerde ara...",
+  "theme": "Tema",
+  "language": "Dil",
+  "profile": "Kullanıcı Profili",
+  "notifications": "Bildirimler ve Sesler",
+  "privacy": "Gizlilik ve Güvenlik",
+  "storage": "Veri ve Depolama",
+  "help": "Yardım ve Destek",
+  "version": "Sürüm",
+  "turkish": "Türkçe",
+  "english": "İngilizce"
+}

@@ -1,0 +1,16 @@
+{
+  "app_title": "UlakChat",
+  "chats": "Chats",
+  "settings": "Settings",
+  "search_placeholder": "Search chats...",
+  "theme": "Theme",
+  "language": "Language",
+  "profile": "User Profile",
+  "notifications": "Notifications and Sounds",
+  "privacy": "Privacy and Security",
+  "storage": "Data and Storage",
+  "help": "Help and Support",
+  "version": "Version",
+  "turkish": "Turkish",
+  "english": "English"
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lingo_easy/lingo_easy.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import '../features/chats/presentation/chats_page.dart';
@@ -40,7 +41,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           item: ItemConfig(
             icon: const Icon(Icons.chat_bubble_rounded),
             inactiveIcon: const Icon(Icons.chat_bubble_outline_rounded),
-            title: 'Sohbetler',
+            title: context.ln('chats'),
             activeForegroundColor: AppColors.primary,
             inactiveForegroundColor: isDark
                 ? AppColors.darkTextSecondary
@@ -52,7 +53,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           item: ItemConfig(
             icon: const Icon(Icons.settings_rounded),
             inactiveIcon: const Icon(Icons.settings_outlined),
-            title: 'Ayarlar',
+            title: context.ln('settings'),
             activeForegroundColor: AppColors.primary,
             inactiveForegroundColor: isDark
                 ? AppColors.darkTextSecondary
@@ -67,9 +68,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         ),
       ),
-      backgroundColor: isDark
-          ? AppColors.darkBackground
-          : AppColors.lightBackground,
+      backgroundColor:
+          isDark ? AppColors.darkBackground : AppColors.lightBackground,
     );
   }
 }

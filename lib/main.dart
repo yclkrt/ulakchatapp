@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lingo_easy/lingo_easy.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
@@ -8,8 +9,16 @@ import 'core/theme/theme_provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    const Directionality(
+      textDirection: TextDirection.ltr,
+      child: LingoWrapper(
+        defaultLocale: 'tr',
+        supportedLocales: ['tr', 'en'],
+        assetsPath: 'assets/lang',
+        child: ProviderScope(
+          child: MyApp(),
+        ),
+      ),
     ),
   );
 }
