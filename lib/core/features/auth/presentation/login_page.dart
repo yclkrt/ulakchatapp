@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_header.dart';
+import 'package:ulakchatapp/core/features/auth/widgets/auth_primary_button.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_social_button.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_text_field.dart';
 
@@ -365,7 +366,11 @@ class _LoginPageState extends ConsumerState<LoginPage>
             const SizedBox(height: 18),
 
             // Action Button
-            _buildPrimaryButton(),
+            AuthPrimaryButton(
+              isLoading: _isLoading,
+              isSignUp: _isSignUp,
+              handleSubmit: _handleSubmit,
+            ),
 
             const SizedBox(height: 20),
 
@@ -711,65 +716,6 @@ class _LoginPageState extends ConsumerState<LoginPage>
           },
         ),
       ],
-    );
-  }
-
-  Widget _buildPrimaryButton() {
-    return Container(
-      height: 52,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: const LinearGradient(
-          colors: [AppColors.primary, AppColors.primaryLight],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.35),
-            blurRadius: 14,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: _isLoading ? null : _handleSubmit,
-          child: Center(
-            child: _isLoading
-                ? const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        _isSignUp ? 'Hesap Oluştur' : 'Giriş Yap',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.3,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(
-                        Icons.arrow_forward_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-          ),
-        ),
-      ),
     );
   }
 
