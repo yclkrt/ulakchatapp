@@ -12,10 +12,6 @@ class ChatsPage extends ConsumerStatefulWidget {
 class _ChatsPageState extends ConsumerState<ChatsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.ln('chats')),
-      ),
-    );
+    return Scaffold(appBar: AppBar(title: Text(context.ln('chats'))));
   }
 }

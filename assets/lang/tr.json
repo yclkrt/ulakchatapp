@@ -1,5 +1,5 @@
 {
-  "app_title": "UlakChat",
+  "app_name": "UlakChat",
   "chats": "Sohbetler",
   "settings": "Ayarlar",
   "search_placeholder": "Sohbetlerde ara...",
@@ -12,5 +12,7 @@
   "help": "Yardım ve Destek",
   "version": "Sürüm",
   "turkish": "Türkçe",
-  "english": "İngilizce"
+  "english": "İngilizce",
+  "join_us_and_start_messaging": "Aramıza katılın ve mesajlaşmaya başlayın",
+  "access_your_chats_by_logging_into_your_account": "Hesabınıza giriş yaparak sohbetlerinize erişin"
 }
