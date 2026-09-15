@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_header.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_primary_button.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_social_button.dart';
+import 'package:ulakchatapp/core/features/auth/widgets/auth_social_row.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_tab_switcher.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_text_field.dart';
 
@@ -427,7 +428,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
             SizedBox(height: context.h(18)),
 
             // Social Buttons & Fast Demo Access
-            _buildSocialRow(),
+            AuthSocialRow(),
           ],
         ),
       ),
@@ -635,34 +636,6 @@ class _LoginPageState extends ConsumerState<LoginPage>
             }
             return null;
           },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialRow() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: AuthSocialButton(
-                icon: Icons.g_mobiledata_rounded,
-                iconSize: 30,
-                label: 'Google',
-                onTap: () => context.go(AppRoutes.main),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: AuthSocialButton(
-                icon: Icons.apple_rounded,
-                iconSize: 22,
-                label: 'Apple',
-                onTap: () => context.go(AppRoutes.main),
-              ),
-            ),
-          ],
         ),
       ],
     );
