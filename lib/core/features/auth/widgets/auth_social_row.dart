@@ -1,12 +1,16 @@
 import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_social_button.dart';
-import 'package:ulakchatapp/core/router/app_router.dart';
 
 class AuthSocialRow extends ConsumerWidget {
   const AuthSocialRow({super.key});
+
+  void _showComingSoon(BuildContext context, String provider) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('$provider ile giriş çok yakında eklenecek.')),
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +23,7 @@ class AuthSocialRow extends ConsumerWidget {
                 icon: Icons.g_mobiledata_rounded,
                 iconSize: context.w(25),
                 label: 'Google',
-                onTap: () => context.go(AppRoutes.main),
+                onTap: () => _showComingSoon(context, 'Google'),
               ),
             ),
             SizedBox(width: context.w(12)),
@@ -28,7 +32,7 @@ class AuthSocialRow extends ConsumerWidget {
                 icon: Icons.apple_rounded,
                 iconSize: context.w(25),
                 label: 'Apple',
-                onTap: () => context.go(AppRoutes.main),
+                onTap: () => _showComingSoon(context, 'Apple'),
               ),
             ),
           ],

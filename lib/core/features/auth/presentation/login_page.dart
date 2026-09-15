@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lingo_easy/lingo_easy.dart';
+import 'package:ulakchatapp/core/features/auth/data/auth_controller.dart';
+import 'package:ulakchatapp/core/features/auth/provider/auth_providers.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_custom_bottom_sheet.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_footer.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_header.dart';
@@ -32,7 +34,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
   final _nameController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  final _signUpFormKey = GlobalKey<FormState>();
+  String? _errorMessage;
 
   // State flags
   bool _isSignUp = false;
@@ -77,17 +79,62 @@ class _LoginPageState extends ConsumerState<LoginPage>
 
   Future<void> _handleSubmit() async {
     FocusScope.of(context).unfocus();
-    if (_formKey.currentState?.validate() ?? false) {
-      setState(() => _isLoading = true);
 
-      // Simulate a brief authentic network delay for sleek feedback
-      await Future.delayed(const Duration(milliseconds: 900));
+    final isValid = _formKey.currentState?.validate() ?? false;
+    if (!isValid) return;
 
-      if (mounted) {
-        setState(() => _isLoading = false);
-        context.go(AppRoutes.main);
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    final controller = ref.read(authControllerProvider.notifier);
+
+    if (_isSignUp) {
+      // Kayıt akışı (şifre eşleşmesi zaten validator ile kontrol edildi,
+      // yine de güvenlik için burada da doğrula).
+      if (_passwordController.text != _confirmPasswordController.text) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = 'Şifreler eşleşmiyor.';
+        });
+        return;
       }
+
+      await controller.signUp(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+        displayName: _nameController.text.trim(),
+      );
+    } else {
+      // Giriş akışı
+      await controller.signIn(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
     }
+
+    if (!mounted) return;
+
+    // Hata var mı kontrol et
+    final state = ref.read(authControllerProvider);
+    state.whenOrNull(
+      error: (error, _) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = AuthController.errorMessage(error);
+        });
+      },
+      data: (_) {
+        // Başarılı — authStateChanges tetiklenir, router redirect ile
+        // otomatik olarak ana ekrana yönlendirir. Yönlendirme olmazsa
+        // (örn. stream gecikmesi) manuel olarak da yönlendir.
+        if (mounted) {
+          setState(() => _isLoading = false);
+          context.go(AppRoutes.main);
+        }
+      },
+    );
   }
 
   //? forgot password
@@ -96,17 +143,49 @@ class _LoginPageState extends ConsumerState<LoginPage>
     if (email == null) return; // kullanıcı iptal etti
     if (!mounted) return;
 
-    // Burada gerçek e-posta gönderme servisini çağırabilirsin:
-    // await authService.sendResetEmail(email);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Sıfırlama bağlantısı $email adresine gönderildi.'),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    );
+    try {
+      await ref
+          .read(authControllerProvider.notifier)
+          .sendPasswordReset(email.trim());
+      if (!mounted) return;
+      final state = ref.read(authControllerProvider);
+      final err = state.whenOrNull(error: (e, _) => e);
+      if (err != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AuthController.errorMessage(err)),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        );
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Sıfırlama bağlantısı $email adresine gönderildi.'),
+          backgroundColor: AppColors.primary,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AuthController.errorMessage(e)),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -247,8 +326,47 @@ class _LoginPageState extends ConsumerState<LoginPage>
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,
               firstChild: _buildSignInFields(),
-              secondChild: _buildSignUpFields(_signUpFormKey),
+              secondChild: _buildSignUpFields(),
             ),
+
+            // Hata mesajı
+            if (_errorMessage != null) ...[
+              SizedBox(height: context.h(14)),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.w(14),
+                  vertical: context.h(12),
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(context.r(14)),
+                  border: Border.all(
+                    color: AppColors.error.withValues(alpha: 0.4),
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.error_outline_rounded,
+                      color: AppColors.error,
+                      size: 20,
+                    ),
+                    SizedBox(width: context.w(10)),
+                    Expanded(
+                      child: Text(
+                        _errorMessage!,
+                        style: TextStyle(
+                          fontSize: context.sp(13),
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.error,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
 
             SizedBox(height: context.h(18)),
 
@@ -301,6 +419,9 @@ class _LoginPageState extends ConsumerState<LoginPage>
           icon: Icons.alternate_email_rounded,
           keyboardType: TextInputType.emailAddress,
           validator: (val) {
+            // Kayıt modundayken giriş alanları gizli olduğu için
+            // validasyonları çalışmamalı.
+            if (_isSignUp) return null;
             if (val == null || val.trim().isEmpty) {
               return context.ln('please_enter_your_email_address');
             }
@@ -327,6 +448,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
             },
           ),
           validator: (val) {
+            if (_isSignUp) return null;
             if (val == null || val.isEmpty) {
               return context.ln('please_enter_your_password');
             }
@@ -388,9 +510,8 @@ class _LoginPageState extends ConsumerState<LoginPage>
     );
   }
 
-  Widget _buildSignUpFields(GlobalKey<FormState>? formKey) {
+  Widget _buildSignUpFields() {
     return AuthSignUpFields(
-      formKey: formKey,
       nameController: _nameController,
       emailController: _emailController,
       passwordController: _passwordController,

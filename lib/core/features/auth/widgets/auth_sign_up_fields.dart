@@ -6,7 +6,6 @@ import 'package:ulakchatapp/core/features/auth/widgets/auth_text_field.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
 
 class AuthSignUpFields extends ConsumerStatefulWidget {
-  final GlobalKey<FormState>? formKey;
   final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -27,7 +26,6 @@ class AuthSignUpFields extends ConsumerStatefulWidget {
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
-    this.formKey,
     this.isSignUp = true,
     this.spacing = 16,
     this.topSpacing = 4,
@@ -44,115 +42,113 @@ class _AuthSignUpFieldsState extends ConsumerState<AuthSignUpFields> {
 
   @override
   Widget build(BuildContext context) {
-    final form = Form(
-      key: widget.formKey,
-      child: Column(
-        children: [
-          SizedBox(height: context.h(widget.topSpacing)),
+    // NOT: Bu widget tek başına Form oluşturmaz. Üstteki LoginPage'deki
+    // tek Form'un parçası olarak kullanılır. Böylece giriş/kayıt
+    // validasyonu tek `_formKey` üzerinden çalışır.
+    return Column(
+      children: [
+        SizedBox(height: context.h(widget.topSpacing)),
 
-          // -------- Ad Soyad --------
-          AuthTextField(
-            controller: widget.nameController,
-            label: context.ln('name_surname'),
-            hint: '',
-            icon: Icons.person_outline_rounded,
-            validator: (val) {
-              if (!widget.isSignUp) return null;
-              if (val == null || val.trim().isEmpty) {
-                return context.ln('please_enter_your_first_and_last_name');
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: context.h(widget.spacing)),
+        // -------- Ad Soyad --------
+        AuthTextField(
+          controller: widget.nameController,
+          label: context.ln('name_surname'),
+          hint: '',
+          icon: Icons.person_outline_rounded,
+          validator: (val) {
+            if (!widget.isSignUp) return null;
+            if (val == null || val.trim().isEmpty) {
+              return context.ln('please_enter_your_first_and_last_name');
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: context.h(widget.spacing)),
 
-          // -------- E-posta --------
-          AuthTextField(
-            controller: widget.emailController,
-            label: context.ln('email_address'),
-            hint: '',
-            icon: Icons.alternate_email_rounded,
-            keyboardType: TextInputType.emailAddress,
-            validator: (val) {
-              if (!widget.isSignUp) return null;
-              if (val == null || val.trim().isEmpty) {
-                return context.ln('please_enter_your_email_address');
-              }
-              if (!val.contains('@')) {
-                return context.ln('enter_a_valid_email_address');
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: context.h(widget.spacing)),
+        // -------- E-posta --------
+        AuthTextField(
+          controller: widget.emailController,
+          label: context.ln('email_address'),
+          hint: '',
+          icon: Icons.alternate_email_rounded,
+          keyboardType: TextInputType.emailAddress,
+          validator: (val) {
+            if (!widget.isSignUp) return null;
+            if (val == null || val.trim().isEmpty) {
+              return context.ln('please_enter_your_email_address');
+            }
+            if (!val.contains('@')) {
+              return context.ln('enter_a_valid_email_address');
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: context.h(widget.spacing)),
 
-          // -------- Şifre --------
-          AuthTextField(
-            controller: widget.passwordController,
-            label: context.ln('password'),
-            hint: '••••••••',
-            icon: Icons.lock_outline_rounded,
-            obscureText: _obscurePassword,
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscurePassword
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                size: context.w(20),
-                color: AppColors.lightTextSecondary,
-              ),
-              onPressed: () {
-                setState(() => _obscurePassword = !_obscurePassword);
-              },
+        // -------- Şifre --------
+        AuthTextField(
+          controller: widget.passwordController,
+          label: context.ln('password'),
+          hint: '••••••••',
+          icon: Icons.lock_outline_rounded,
+          obscureText: _obscurePassword,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _obscurePassword
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+              size: context.w(20),
+              color: AppColors.lightTextSecondary,
             ),
-            validator: (val) {
-              if (!widget.isSignUp) return null;
-              if (val == null || val.isEmpty) {
-                return context.ln('please_set_a_password');
-              }
-              if (val.length < 6) {
-                return context.ln(
-                  'the_password_must_be_at_least_6_characters_long',
-                );
-              }
-              return null;
+            onPressed: () {
+              setState(() => _obscurePassword = !_obscurePassword);
             },
           ),
-          SizedBox(height: context.h(widget.spacing)),
+          validator: (val) {
+            if (!widget.isSignUp) return null;
+            if (val == null || val.isEmpty) {
+              return context.ln('please_set_a_password');
+            }
+            if (val.length < 6) {
+              return context.ln(
+                'the_password_must_be_at_least_6_characters_long',
+              );
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: context.h(widget.spacing)),
 
-          // -------- Şifre Tekrar --------
-          AuthTextField(
-            controller: widget.confirmPasswordController,
-            label: context.ln('password_repeat'),
-            hint: '••••••••',
-            icon: Icons.lock_clock_outlined,
-            obscureText: _obscureConfirmPassword,
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscureConfirmPassword
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                size: context.w(20),
-                color: AppColors.lightTextSecondary,
-              ),
-              onPressed: () {
-                setState(
-                  () => _obscureConfirmPassword = !_obscureConfirmPassword,
-                );
-              },
+        // -------- Şifre Tekrar --------
+        AuthTextField(
+          controller: widget.confirmPasswordController,
+          label: context.ln('password_repeat'),
+          hint: '••••••••',
+          icon: Icons.lock_clock_outlined,
+          obscureText: _obscureConfirmPassword,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _obscureConfirmPassword
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+              size: context.w(20),
+              color: AppColors.lightTextSecondary,
             ),
-            validator: (val) {
-              if (!widget.isSignUp) return null;
-              if (val != widget.passwordController.text) {
-                return context.ln('password_do_not_match');
-              }
-              return null;
+            onPressed: () {
+              setState(
+                () => _obscureConfirmPassword = !_obscureConfirmPassword,
+              );
             },
           ),
-        ],
-      ),
+          validator: (val) {
+            if (!widget.isSignUp) return null;
+            if (val != widget.passwordController.text) {
+              return context.ln('password_do_not_match');
+            }
+            return null;
+          },
+        ),
+      ],
     );
-
-    return form;
   }
 }

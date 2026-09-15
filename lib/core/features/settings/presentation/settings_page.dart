@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lingo_easy/lingo_easy.dart';
+import 'package:ulakchatapp/core/features/auth/provider/auth_providers.dart';
+import 'package:ulakchatapp/core/providers/firebase_providers.dart';
+import 'package:ulakchatapp/core/router/app_router.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -10,6 +14,13 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
+  Future<void> _signOut() async {
+    await ref.read(authControllerProvider.notifier).signOut();
+    if (!mounted) return;
+    // authStateChanges redirect'i tetikler; garanti olması için manuel yönlendir.
+    context.go(AppRoutes.login);
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentLang = context.currentLocale;
@@ -49,8 +60,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ),
           ),
+          const SizedBox(height: 12),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.logout_rounded),
+              title: const Text('Çıkış Yap'),
+              subtitle: Text(ref.watch(authStateChangesProvider).valueOrNull?.email ?? ''),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: _signOut,
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
