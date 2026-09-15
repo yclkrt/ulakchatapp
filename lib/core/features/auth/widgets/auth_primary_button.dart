@@ -56,7 +56,7 @@ class AuthPrimaryButton extends ConsumerWidget {
                       Text(
                         isSignUp
                             ? context.ln('create_account')
-                            : context.ln('login'),
+                            : context.ln('log_in'),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: context.sp(16),

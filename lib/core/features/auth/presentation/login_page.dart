@@ -1,9 +1,11 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_header.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_primary_button.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_social_button.dart';
+import 'package:ulakchatapp/core/features/auth/widgets/auth_tab_switcher.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_text_field.dart';
 
 import '../../../router/app_router.dart';
@@ -249,8 +251,8 @@ class _LoginPageState extends ConsumerState<LoginPage>
               top: -80,
               right: -60,
               child: Container(
-                width: 260,
-                height: 260,
+                width: context.w(260),
+                height: context.h(260),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -266,8 +268,8 @@ class _LoginPageState extends ConsumerState<LoginPage>
               bottom: -60,
               left: -50,
               child: Container(
-                width: 240,
-                height: 240,
+                width: context.w(240),
+                height: context.h(240),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -284,12 +286,15 @@ class _LoginPageState extends ConsumerState<LoginPage>
               child: Center(
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0,
-                    vertical: 16.0,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.w(24.0),
+                    vertical: context.h(16.0),
                   ),
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 440),
+                    constraints: BoxConstraints(
+                      maxWidth: double.infinity,
+                      maxHeight: double.infinity,
+                    ),
                     child: FadeTransition(
                       opacity: _fadeAnimation,
                       child: SlideTransition(
@@ -298,19 +303,19 @@ class _LoginPageState extends ConsumerState<LoginPage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const SizedBox(height: 12),
+                            SizedBox(height: context.h(12)),
                             // App Logo & Header
                             AuthHeader(isSignUp: _isSignUp),
-                            const SizedBox(height: 28),
+                            SizedBox(height: context.h(28)),
 
                             // Card with Form
                             _buildAuthCard(isDark),
 
-                            const SizedBox(height: 24),
+                            SizedBox(height: context.h(24)),
 
                             // Footer Terms
                             _buildFooter(isDark),
-                            const SizedBox(height: 12),
+                            SizedBox(height: context.h(12)),
                           ],
                         ),
                       ),
@@ -329,10 +334,10 @@ class _LoginPageState extends ConsumerState<LoginPage>
     return Container(
       decoration: BoxDecoration(
         color: AppColors.lightSurface,
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(context.r(28)),
         border: Border.all(
           color: (AppColors.lightBorder).withValues(alpha: 0.9),
-          width: 1.2,
+          width: context.w(1.2),
         ),
         boxShadow: [
           BoxShadow(
@@ -342,16 +347,28 @@ class _LoginPageState extends ConsumerState<LoginPage>
           ),
         ],
       ),
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(context.w(24)),
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Segmented Switcher (Giriş Yap / Kayıt Ol)
-            _buildTabSwitcher(isDark),
+            AuthTabSwitcher(
+              isSignUp: _isSignUp,
+              onTapLogin: () {
+                if (_isSignUp) {
+                  setState(() => _isSignUp = false);
+                }
+              },
+              onTapSignUp: () {
+                if (!_isSignUp) {
+                  setState(() => _isSignUp = true);
+                }
+              },
+            ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: context.h(24)),
 
             // Animated Form Fields
             AnimatedCrossFade(
@@ -363,7 +380,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
               secondChild: _buildSignUpFields(isDark),
             ),
 
-            const SizedBox(height: 18),
+            SizedBox(height: context.h(18)),
 
             // Action Button
             AuthPrimaryButton(
@@ -372,7 +389,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
               handleSubmit: _handleSubmit,
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: context.h(20)),
 
             // Divider "veya şununla devam et"
             Row(
@@ -385,11 +402,11 @@ class _LoginPageState extends ConsumerState<LoginPage>
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: EdgeInsets.symmetric(horizontal: context.w(12)),
                   child: Text(
                     'veya',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: context.sp(12),
                       fontWeight: FontWeight.w500,
                       color: isDark
                           ? AppColors.darkTextSecondary
@@ -407,108 +424,12 @@ class _LoginPageState extends ConsumerState<LoginPage>
               ],
             ),
 
-            const SizedBox(height: 18),
+            SizedBox(height: context.h(18)),
 
             // Social Buttons & Fast Demo Access
             _buildSocialRow(),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildTabSwitcher(bool isDark) {
-    return Container(
-      height: 48,
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkBackground : AppColors.lightBackground,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                if (_isSignUp) setState(() => _isSignUp = false);
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeInOut,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: !_isSignUp
-                      ? (isDark ? AppColors.darkSurface : Colors.white)
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: !_isSignUp
-                      ? [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.08),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : [],
-                ),
-                child: Text(
-                  'Giriş Yap',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: !_isSignUp ? FontWeight.bold : FontWeight.w500,
-                    color: !_isSignUp
-                        ? AppColors.primary
-                        : (isDark
-                              ? AppColors.darkTextSecondary
-                              : AppColors.lightTextSecondary),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                if (!_isSignUp) setState(() => _isSignUp = true);
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeInOut,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: _isSignUp
-                      ? (isDark ? AppColors.darkSurface : Colors.white)
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: _isSignUp
-                      ? [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.08),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : [],
-                ),
-                child: Text(
-                  'Kayıt Ol',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: _isSignUp ? FontWeight.bold : FontWeight.w500,
-                    color: _isSignUp
-                        ? AppColors.primary
-                        : (isDark
-                              ? AppColors.darkTextSecondary
-                              : AppColors.lightTextSecondary),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
