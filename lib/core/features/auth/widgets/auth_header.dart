@@ -1,3 +1,4 @@
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,8 +12,67 @@ class AuthHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentLang = context.currentLocale;
+
     return Column(
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            AnimatedToggleSwitch<String>.size(
+              current: currentLang,
+              values: const ['tr', 'en'],
+              onChanged: (lang) => context.setLocale(lang),
+              height: context.h(36),
+              indicatorSize: const Size.fromWidth(48),
+              borderWidth: 1.0,
+              iconOpacity: 1.0,
+              selectedIconOpacity: 1.0,
+              spacing: 2.0,
+              customIconBuilder: (context, local, global) => Text(
+                local.value.toUpperCase(),
+                style: TextStyle(
+                  fontSize: context.sp(12),
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.5,
+                  color: Color.lerp(
+                    AppColors.lightTextSecondary,
+                    Colors.white,
+                    local.animationValue,
+                  ),
+                ),
+              ),
+              style: ToggleStyle(
+                backgroundColor: AppColors.lightBorder.withValues(alpha: 0.5),
+                borderColor: AppColors.lightBorder,
+                borderRadius: BorderRadius.circular(context.r(20)),
+                indicatorBorderRadius:
+                    BorderRadius.circular(context.r(16)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              styleBuilder: (lang) => ToggleStyle(
+                indicatorGradient: const LinearGradient(
+                  colors: [AppColors.primary, AppColors.primaryLight],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                indicatorBoxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.35),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
         Container(
           width: context.w(84),
           height: context.h(84),

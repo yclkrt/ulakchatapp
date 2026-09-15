@@ -40,6 +40,7 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^6.4.0
   dynamic_responsive_screen: ^1.0.0
   lingo_easy: ^1.1.0
+  animated_toggle_switch: ^0.8.7
   
 
 dev_dependencies:
