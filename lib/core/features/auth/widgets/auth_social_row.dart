@@ -17,7 +17,7 @@ class AuthSocialRow extends ConsumerWidget {
             Expanded(
               child: AuthSocialButton(
                 icon: Icons.g_mobiledata_rounded,
-                iconSize: context.w(30),
+                iconSize: context.w(25),
                 label: 'Google',
                 onTap: () => context.go(AppRoutes.main),
               ),
@@ -26,7 +26,7 @@ class AuthSocialRow extends ConsumerWidget {
             Expanded(
               child: AuthSocialButton(
                 icon: Icons.apple_rounded,
-                iconSize: context.w(22),
+                iconSize: context.w(25),
                 label: 'Apple',
                 onTap: () => context.go(AppRoutes.main),
               ),

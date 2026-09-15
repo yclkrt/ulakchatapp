@@ -7,6 +7,7 @@ import 'package:ulakchatapp/core/features/auth/widgets/auth_custom_bottom_sheet.
 import 'package:ulakchatapp/core/features/auth/widgets/auth_footer.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_header.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_primary_button.dart';
+import 'package:ulakchatapp/core/features/auth/widgets/auth_sign_up_fields.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_social_row.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_tab_switcher.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_text_field.dart';
@@ -31,10 +32,11 @@ class _LoginPageState extends ConsumerState<LoginPage>
   final _nameController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  final _signUpFormKey = GlobalKey<FormState>();
+
   // State flags
   bool _isSignUp = false;
   bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
   bool _rememberMe = true;
   bool _isLoading = false;
 
@@ -109,8 +111,6 @@ class _LoginPageState extends ConsumerState<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -127,7 +127,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      AppColors.primary.withValues(alpha: isDark ? 0.35 : 0.22),
+                      AppColors.primary.withValues(alpha: 0.22),
                       AppColors.primaryLight.withValues(alpha: 0.0),
                     ],
                   ),
@@ -144,7 +144,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      AppColors.accent.withValues(alpha: isDark ? 0.25 : 0.15),
+                      AppColors.accent.withValues(alpha: 0.15),
                       AppColors.accentLight.withValues(alpha: 0.0),
                     ],
                   ),
@@ -179,7 +179,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                             SizedBox(height: context.h(28)),
 
                             // Card with Form
-                            _buildAuthCard(isDark),
+                            _buildAuthCard(),
 
                             SizedBox(height: context.h(24)),
 
@@ -200,7 +200,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
     );
   }
 
-  Widget _buildAuthCard(bool isDark) {
+  Widget _buildAuthCard() {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.lightSurface,
@@ -247,7 +247,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,
               firstChild: _buildSignInFields(),
-              secondChild: _buildSignUpFields(),
+              secondChild: _buildSignUpFields(_signUpFormKey),
             ),
 
             SizedBox(height: context.h(18)),
@@ -388,105 +388,14 @@ class _LoginPageState extends ConsumerState<LoginPage>
     );
   }
 
-  Widget _buildSignUpFields() {
-    return Column(
-      children: [
-        SizedBox(height: context.h(4)),
-        AuthTextField(
-          controller: _nameController,
-          label: context.ln('name_surname'),
-          hint: '',
-          icon: Icons.person_outline_rounded,
-          validator: (val) {
-            if (_isSignUp && (val == null || val.trim().isEmpty)) {
-              return context.ln('please_enter_your_first_and_last_name');
-            }
-            return null;
-          },
-        ),
-        SizedBox(height: context.h(16)),
-        AuthTextField(
-          controller: _emailController,
-          label: context.ln('email_address'),
-          hint: '',
-          icon: Icons.alternate_email_rounded,
-          keyboardType: TextInputType.emailAddress,
-          validator: (val) {
-            if (_isSignUp) {
-              if (val == null || val.trim().isEmpty) {
-                return context.ln('please_enter_your_email_address');
-              }
-              if (!val.contains('@')) {
-                return context.ln('enter_a_valid_email_address');
-              }
-            }
-            return null;
-          },
-        ),
-        SizedBox(height: context.h(16)),
-        AuthTextField(
-          controller: _passwordController,
-          label: context.ln('password'),
-          hint: '••••••••',
-          icon: Icons.lock_outline_rounded,
-          obscureText: _obscurePassword,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _obscurePassword
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
-              size: context.w(20),
-              color: AppColors.lightTextSecondary,
-            ),
-            onPressed: () {
-              setState(() => _obscurePassword = !_obscurePassword);
-            },
-          ),
-          validator: (val) {
-            if (_isSignUp) {
-              if (val == null || val.isEmpty) {
-                return context.ln('please_set_a_password');
-              }
-              if (val.length < 6) {
-                return context.ln(
-                  'the_password_must_be_at_least_6_characters_long',
-                );
-              }
-            }
-            return null;
-          },
-        ),
-        SizedBox(height: context.h(16)),
-        AuthTextField(
-          controller: _confirmPasswordController,
-          label: context.ln('password_repeat'),
-          hint: '••••••••',
-          icon: Icons.lock_clock_outlined,
-          obscureText: _obscureConfirmPassword,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _obscureConfirmPassword
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
-              size: context.w(20),
-              color: AppColors.lightTextSecondary,
-            ),
-            onPressed: () {
-              setState(
-                () => _obscureConfirmPassword = !_obscureConfirmPassword,
-              );
-            },
-          ),
-          validator: (val) {
-            if (_isSignUp) {
-              if (val != _passwordController.text) {
-                return context.ln('password_do_not_match');
-              }
-            }
-            return null;
-          },
-        ),
-      ],
+  Widget _buildSignUpFields(GlobalKey<FormState>? formKey) {
+    return AuthSignUpFields(
+      formKey: formKey,
+      nameController: _nameController,
+      emailController: _emailController,
+      passwordController: _passwordController,
+      confirmPasswordController: _confirmPasswordController,
+      isSignUp: _isSignUp,
     );
   }
 }

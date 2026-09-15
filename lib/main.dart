@@ -15,9 +15,7 @@ void main() {
         defaultLocale: 'tr',
         supportedLocales: ['tr', 'en'],
         assetsPath: 'assets/lang',
-        child: ProviderScope(
-          child: MyApp(),
-        ),
+        child: ProviderScope(child: MyApp()),
       ),
     ),
   );
