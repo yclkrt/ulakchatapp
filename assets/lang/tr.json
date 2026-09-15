@@ -17,5 +17,12 @@
   "access_your_chats_by_logging_into_your_account": "Hesabınıza giriş yaparak sohbetlerinize erişin",
   "create_account": "Hesap Oluştur",
   "log_in": "Giriş Yap",
-  "sign_up": "Kayıt Ol"
+  "sign_up": "Kayıt Ol",
+  "forgot_your_password": "Şifrenizi mi Unuttunuz?",
+  "enter_your_email_address_for_the_reset_link": "Sıfırlama bağlantısı için e-posta adresinizi girin.",
+  "email_address_required": "E-posta adresi gerekli",
+  "enter_a_valid_email_address": "Geçerli bir e-posta girin.",
+  "email_address": "E-posta Adresi",
+  "example_gmail": "ornek@gmail.com",
+  "send_reset_link": "Sıfırlama Bağlantısı Gönder"
 }

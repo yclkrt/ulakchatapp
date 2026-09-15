@@ -17,5 +17,12 @@
   "access_your_chats_by_logging_into_your_account": "Access your chats by logging into your account.",
   "create_account": "Create Account",
   "log_in": "Log In",
-  "sign_up": "Sign Up"
+  "sign_up": "Sign Up",
+  "forgot_your_password": "Forgot your password?",
+  "enter_your_email_address_for_the_reset_link": "Enter your email address for the reset link.",
+  "email_address_required": "Email address required",
+  "enter_a_valid_email_address": "Enter a valid email address.",
+  "email_address": "Email Address",
+  "example_gmail": "example@gmail.com",
+  "send_reset_link": "Send Reset Link"
 }
