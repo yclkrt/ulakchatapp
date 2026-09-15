@@ -2,7 +2,9 @@ import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lingo_easy/lingo_easy.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_custom_bottom_sheet.dart';
+import 'package:ulakchatapp/core/features/auth/widgets/auth_footer.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_header.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_primary_button.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_social_row.dart';
@@ -182,7 +184,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                             SizedBox(height: context.h(24)),
 
                             // Footer Terms
-                            _buildFooter(isDark),
+                            AuthFooter(),
                             SizedBox(height: context.h(12)),
                           ],
                         ),
@@ -244,8 +246,8 @@ class _LoginPageState extends ConsumerState<LoginPage>
               crossFadeState: _isSignUp
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,
-              firstChild: _buildSignInFields(isDark),
-              secondChild: _buildSignUpFields(isDark),
+              firstChild: _buildSignInFields(),
+              secondChild: _buildSignUpFields(),
             ),
 
             SizedBox(height: context.h(18)),
@@ -262,13 +264,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
             // Divider "veya şununla devam et"
             Row(
               children: [
-                Expanded(
-                  child: Divider(
-                    color: isDark
-                        ? AppColors.darkBorder
-                        : AppColors.lightBorder,
-                  ),
-                ),
+                Expanded(child: Divider(color: AppColors.lightBorder)),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: context.w(12)),
                   child: Text(
@@ -276,19 +272,11 @@ class _LoginPageState extends ConsumerState<LoginPage>
                     style: TextStyle(
                       fontSize: context.sp(12),
                       fontWeight: FontWeight.w500,
-                      color: isDark
-                          ? AppColors.darkTextSecondary
-                          : AppColors.lightTextSecondary,
+                      color: AppColors.lightTextSecondary,
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Divider(
-                    color: isDark
-                        ? AppColors.darkBorder
-                        : AppColors.lightBorder,
-                  ),
-                ),
+                Expanded(child: Divider(color: AppColors.lightBorder)),
               ],
             ),
 
@@ -302,19 +290,19 @@ class _LoginPageState extends ConsumerState<LoginPage>
     );
   }
 
-  Widget _buildSignInFields(bool isDark) {
+  Widget _buildSignInFields() {
     return Column(
       children: [
-        SizedBox(height: 4),
+        SizedBox(height: context.h(4)),
         AuthTextField(
           controller: _emailController,
-          label: 'E-posta',
+          label: context.ln('e_mail'),
           hint: '',
           icon: Icons.alternate_email_rounded,
           keyboardType: TextInputType.emailAddress,
           validator: (val) {
             if (val == null || val.trim().isEmpty) {
-              return 'Lütfen e-posta veya telefon girin';
+              return context.ln('please_enter_your_email_address');
             }
             return null;
           },
@@ -322,7 +310,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
         const SizedBox(height: 16),
         AuthTextField(
           controller: _passwordController,
-          label: 'Şifre',
+          label: context.ln('password'),
           hint: '••••••••',
           icon: Icons.lock_outline_rounded,
           obscureText: _obscurePassword,
@@ -331,10 +319,8 @@ class _LoginPageState extends ConsumerState<LoginPage>
               _obscurePassword
                   ? Icons.visibility_outlined
                   : Icons.visibility_off_outlined,
-              size: 20,
-              color: isDark
-                  ? AppColors.darkTextSecondary
-                  : AppColors.lightTextSecondary,
+              size: context.w(20),
+              color: AppColors.lightTextSecondary,
             ),
             onPressed: () {
               setState(() => _obscurePassword = !_obscurePassword);
@@ -342,42 +328,40 @@ class _LoginPageState extends ConsumerState<LoginPage>
           ),
           validator: (val) {
             if (val == null || val.isEmpty) {
-              return 'Lütfen şifrenizi girin';
+              return context.ln('please_enter_your_password');
             }
             if (val.length < 6) {
-              return 'Şifre en az 6 karakter olmalıdır';
+              return context.ln('password_must_be_at_least_6_characters_long');
             }
             return null;
           },
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: context.h(8)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
                 SizedBox(
-                  height: 24,
-                  width: 24,
+                  height: context.h(24),
+                  width: context.w(24),
                   child: Checkbox(
                     value: _rememberMe,
                     activeColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(context.r(5)),
                     ),
                     onChanged: (val) {
                       setState(() => _rememberMe = val ?? false);
                     },
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: context.w(8)),
                 Text(
-                  'Beni hatırla',
+                  context.ln('remember_me'),
                   style: TextStyle(
-                    fontSize: 13,
-                    color: isDark
-                        ? AppColors.darkTextSecondary
-                        : AppColors.lightTextSecondary,
+                    fontSize: context.sp(13),
+                    color: AppColors.lightTextSecondary,
                   ),
                 ),
               ],
@@ -389,10 +373,10 @@ class _LoginPageState extends ConsumerState<LoginPage>
                 minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              child: const Text(
-                'Şifremi unuttum',
+              child: Text(
+                context.ln('forgot_password'),
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: context.sp(13),
                   fontWeight: FontWeight.w600,
                   color: AppColors.primary,
                 ),
@@ -404,45 +388,45 @@ class _LoginPageState extends ConsumerState<LoginPage>
     );
   }
 
-  Widget _buildSignUpFields(bool isDark) {
+  Widget _buildSignUpFields() {
     return Column(
       children: [
-        SizedBox(height: 4),
+        SizedBox(height: context.h(4)),
         AuthTextField(
           controller: _nameController,
-          label: 'Ad Soyad',
+          label: context.ln('name_surname'),
           hint: '',
           icon: Icons.person_outline_rounded,
           validator: (val) {
             if (_isSignUp && (val == null || val.trim().isEmpty)) {
-              return 'Lütfen adınızı ve soyadınızı girin';
+              return context.ln('please_enter_your_first_and_last_name');
             }
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: context.h(16)),
         AuthTextField(
           controller: _emailController,
-          label: 'E-posta Adresi',
+          label: context.ln('email_address'),
           hint: '',
           icon: Icons.alternate_email_rounded,
           keyboardType: TextInputType.emailAddress,
           validator: (val) {
             if (_isSignUp) {
               if (val == null || val.trim().isEmpty) {
-                return 'Lütfen e-posta girin';
+                return context.ln('please_enter_your_email_address');
               }
               if (!val.contains('@')) {
-                return 'Geçerli bir e-posta adresi girin';
+                return context.ln('enter_a_valid_email_address');
               }
             }
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: context.h(16)),
         AuthTextField(
           controller: _passwordController,
-          label: 'Şifre',
+          label: context.ln('password'),
           hint: '••••••••',
           icon: Icons.lock_outline_rounded,
           obscureText: _obscurePassword,
@@ -451,10 +435,8 @@ class _LoginPageState extends ConsumerState<LoginPage>
               _obscurePassword
                   ? Icons.visibility_outlined
                   : Icons.visibility_off_outlined,
-              size: 20,
-              color: isDark
-                  ? AppColors.darkTextSecondary
-                  : AppColors.lightTextSecondary,
+              size: context.w(20),
+              color: AppColors.lightTextSecondary,
             ),
             onPressed: () {
               setState(() => _obscurePassword = !_obscurePassword);
@@ -463,19 +445,21 @@ class _LoginPageState extends ConsumerState<LoginPage>
           validator: (val) {
             if (_isSignUp) {
               if (val == null || val.isEmpty) {
-                return 'Lütfen şifre belirleyin';
+                return context.ln('please_set_a_password');
               }
               if (val.length < 6) {
-                return 'Şifre en az 6 karakter olmalıdır';
+                return context.ln(
+                  'the_password_must_be_at_least_6_characters_long',
+                );
               }
             }
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: context.h(16)),
         AuthTextField(
           controller: _confirmPasswordController,
-          label: 'Şifre Tekrar',
+          label: context.ln('password_repeat'),
           hint: '••••••••',
           icon: Icons.lock_clock_outlined,
           obscureText: _obscureConfirmPassword,
@@ -484,10 +468,8 @@ class _LoginPageState extends ConsumerState<LoginPage>
               _obscureConfirmPassword
                   ? Icons.visibility_outlined
                   : Icons.visibility_off_outlined,
-              size: 20,
-              color: isDark
-                  ? AppColors.darkTextSecondary
-                  : AppColors.lightTextSecondary,
+              size: context.w(20),
+              color: AppColors.lightTextSecondary,
             ),
             onPressed: () {
               setState(
@@ -498,31 +480,13 @@ class _LoginPageState extends ConsumerState<LoginPage>
           validator: (val) {
             if (_isSignUp) {
               if (val != _passwordController.text) {
-                return 'Şifreler eşleşmiyor';
+                return context.ln('password_do_not_match');
               }
             }
             return null;
           },
         ),
       ],
-    );
-  }
-
-  Widget _buildFooter(bool isDark) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Text(
-        'Devam ederek Kullanım Şartları ve Gizlilik Politikasını kabul etmiş olursunuz.',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 11.5,
-          color:
-              (isDark
-                      ? AppColors.darkTextSecondary
-                      : AppColors.lightTextSecondary)
-                  .withValues(alpha: 0.8),
-        ),
-      ),
     );
   }
 }

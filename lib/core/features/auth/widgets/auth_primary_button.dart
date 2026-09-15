@@ -64,12 +64,6 @@ class AuthPrimaryButton extends ConsumerWidget {
                           letterSpacing: 0.3,
                         ),
                       ),
-                      SizedBox(width: context.w(8)),
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Colors.white,
-                        size: context.sp(20),
-                      ),
                     ],
                   ),
           ),

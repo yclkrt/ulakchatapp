@@ -24,5 +24,18 @@
   "enter_a_valid_email_address": "Geçerli bir e-posta girin.",
   "email_address": "E-posta Adresi",
   "example_gmail": "ornek@gmail.com",
-  "send_reset_link": "Sıfırlama Bağlantısı Gönder"
+  "send_reset_link": "Sıfırlama Bağlantısı Gönder",
+  "by_continuing_yo_agree_to_the_terms_of_use_and_privacy_policy": "Devam ederek Kullanım Şartları ve Gizlilik Politikasını kabul etmiş olursunuz.",
+  "e_mail": "E-posta",
+  "please_enter_your_email_address": "Lütfen e-posta giriniz.",
+  "password": "Şifre",
+  "please_enter_your_password": "Lütfen şifrenizi giriniz.",
+  "the_password_must_be_at_least_6_characters_long": "Parola en az 6 karakter uzunluğunda olmalıdır.",
+  "remember_me": "Beni Hatırla",
+  "forgot_password": "Şifremi Unuttum",
+  "name_surname": "Ad Soyad",
+  "please_enter_your_first_and_last_name": "Lütfen adınızı ve soyadınızı giriniz",
+  "please_set_a_password": "Lütfen şifre belirleyin",
+  "password_repeat": "Şifre Tekrar",
+  "password_do_not_match": "Şifreler Eşleşmiyor"
 }
