@@ -41,6 +41,7 @@ dependencies:
   dynamic_responsive_screen: ^1.0.0
   lingo_easy: ^1.1.0
   animated_toggle_switch: ^0.8.7
+  firebase_core: ^4.15.0
   
 
 dev_dependencies:
