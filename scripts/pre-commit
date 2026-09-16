@@ -1,0 +1,28 @@
+#!/bin/sh
+# Push/commit öncesi Firebase secret'larının yanlışlıkla eklenmesini engeller.
+# Kurulum: cp scripts/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+FORBIDDEN_PATTERN='AIza[0-9A-Za-z_-]{35}'
+
+# Staged dart dosyalarında hardcoded Google key var mı?
+STAGED_DART=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.dart$' || true)
+if [ -n "$STAGED_DART" ]; then
+  if echo "$STAGED_DART" | xargs grep -E -n "$FORBIDDEN_PATTERN" 2>/dev/null; then
+    echo ""
+    echo "⛔ HATA: staged .dart dosyalarında hardcoded Google API key bulundu."
+    echo "lib/firebase_options.dart içinde key olmamalı, --dart-define kullanın."
+    echo "Bkz: FIREBASE_SETUP.md"
+    exit 1
+  fi
+fi
+
+# Gerçek Firebase dosyaları commit'e eklenmeye çalışılıyor mu?
+FORBIDDEN_FILES="android/app/google-services.json ios/Runner/GoogleService-Info.plist macos/Runner/GoogleService-Info.plist .env.local .env"
+for f in $FORBIDDEN_FILES; do
+  if git diff --cached --name-only | grep -qx "$f"; then
+    echo "⛔ HATA: $f commit'e eklenemez (.gitignore + güvenlik kuralı). Bkz: FIREBASE_SETUP.md"
+    exit 1
+  fi
+done
+
+exit 0
