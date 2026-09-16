@@ -1,3 +1,4 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -102,10 +103,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
           ),
           // Stack'teki taşan kart için boşluk (52 taşma + 22 nefes).
-          const SliverToBoxAdapter(child: SizedBox(height: 74)),
+          SliverToBoxAdapter(child: SizedBox(height: context.h(74))),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: context.w(20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -115,7 +116,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     isDark: isDark,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
+                        padding: EdgeInsets.fromLTRB(
+                          context.w(16),
+                          context.h(14),
+                          context.w(16),
+                          context.h(6),
+                        ),
                         child: Row(
                           children: [
                             IconBadge(
@@ -127,15 +133,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                               bg: AppColors.primary.withValues(alpha: 0.12),
                               fg: AppColors.primary,
                             ),
-                            const SizedBox(width: 13),
+                            SizedBox(width: context.w(13)),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     context.ln('theme'),
-                                    style: const TextStyle(
-                                      fontSize: 15,
+                                    style: TextStyle(
+                                      fontSize: context.sp(15),
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
@@ -146,7 +152,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                                         ? context.ln('theme_dark')
                                         : context.ln('theme_light'),
                                     style: TextStyle(
-                                      fontSize: 12.5,
+                                      fontSize: context.sp(12.5),
                                       color: sub,
                                     ),
                                   ),
@@ -157,14 +163,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+                        padding: EdgeInsets.fromLTRB(
+                          context.w(16),
+                          context.h(10),
+                          context.w(16),
+                          context.h(16),
+                        ),
                         child: Container(
-                          padding: const EdgeInsets.all(4),
+                          padding: EdgeInsets.all(context.w(4)),
                           decoration: BoxDecoration(
                             color: isDark
                                 ? AppColors.darkBackground
                                 : AppColors.lightBackground,
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(context.r(16)),
                           ),
                           child: Row(
                             children: [
@@ -222,7 +233,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           child: Text(
                             lang.toUpperCase(),
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: context.sp(12),
                               fontWeight: FontWeight.w800,
                               letterSpacing: 0.6,
                               color: sub,
@@ -233,7 +244,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.h(20)),
                   SectionLabel(title: context.ln('general')),
                   SettingsGroup(
                     cardColor: card,
@@ -267,7 +278,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.h(20)),
                   SectionLabel(title: context.ln('support')),
                   SettingsGroup(
                     cardColor: card,
@@ -293,10 +304,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.h(20)),
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(context.r(20)),
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.error.withValues(alpha: 0.18),
@@ -309,27 +320,27 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       color: AppColors.error,
                       borderRadius: BorderRadius.circular(20),
                       child: InkWell(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(context.r(20)),
                         onTap: _signOut,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 18,
+                          padding: EdgeInsets.symmetric(
+                            vertical: context.h(16),
+                            horizontal: context.w(18),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.logout_rounded,
                                 color: Colors.white,
-                                size: 20,
+                                size: context.w(20),
                               ),
-                              const SizedBox(width: 10),
+                              SizedBox(width: context.w(10)),
                               Text(
                                 context.ln('sign_out'),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 15.5,
+                                  fontSize: context.sp(15.5),
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
@@ -339,30 +350,30 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 22),
+                  SizedBox(height: context.h(22)),
                   Center(
                     child: Column(
                       children: [
                         Text(
                           context.ln('app_name'),
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: context.sp(13),
                             fontWeight: FontWeight.w800,
                             color: sub,
                           ),
                         ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: context.h(2)),
                         Text(
                           '${context.ln('version')} ${context.ln('version_number')}',
                           style: TextStyle(
-                            fontSize: 11.5,
+                            fontSize: context.sp(11.5),
                             color: sub.withValues(alpha: 0.75),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 28),
+                  SizedBox(height: context.h(28)),
                 ],
               ),
             ),
