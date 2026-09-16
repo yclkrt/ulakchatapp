@@ -43,3 +43,38 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# ------------------------------------------------------------------
+# Firebase / Google - GERÇEK SECRET'LAR ASLA COMMIT'LENMEZ
+# Neden? GitHub secret-scanning "Google API Key (AIza...)" alert'i veriyor.
+# Not: Firebase client apiKey'leri teknik olarak herkese açık kabul edilir
+# (APK/IPA içinden zaten çıkarılabilir). Gerçek güvenlik = API kısıtlaması
+# + App Check + Firestore/Storage rules ile sağlanır. Yine de repo'yu temiz
+# tutmak ve alert'leri kapatmak için key'leri repo DIŞINDA tutuyoruz.
+# ------------------------------------------------------------------
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+macos/Runner/GoogleService-Info.plist
+
+# Dart-define secret dosyaları (yerel key'ler burada)
+.env
+.env.local
+.env.*.local
+.firebase_cache/
+
+# Android release imzalama (çok kritik - çalınırsa kimliğin çalınır)
+*.jks
+*.keystore
+android/key.properties
+android/app/*.jks
+
+# Firebase Admin / Service Account (ASLA client repo'ya konmaz!)
+*-service-account.json
+*serviceAccountKey*.json
+service-account*.json
+android/app/*service*.json
+
+# Firebase emülatör / cache
+.firebase/
+.firestore_emulator/
+

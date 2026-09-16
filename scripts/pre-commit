@@ -1,0 +1,27 @@
+#!/bin/sh
+# Firebase secret'larının commit'lenmesini engeller.
+# Kurulum: cp scripts/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+
+# İzlenmemesi gereken gerçek secret dosyaları yanlışlıkla eklendiyse durdur
+for f in $STAGED; do
+  case "$f" in
+    android/app/google-services.json|ios/Runner/GoogleService-Info.plist|macos/Runner/GoogleService-Info.plist|.env|.env.local|.env.*.local)
+      echo "⛔ HATA: $f dosyası secret içerir, commit'lenemez!"
+      echo "   Bu dosya .gitignore'da olmalı. Lütfen git reset HEAD -- $f yapın."
+      exit 1
+      ;;
+  esac
+done
+
+# Staged içeriğe EKLENEN satırlarda Google API key deseni varsa durdur.
+# (Silinen satırlar sayılmaz - yoksa eski key'leri temizleyen commit engellenir.)
+if git diff --cached | grep '^+' | grep -v '^+++' | grep -Eq 'AIza[0-9A-Za-z_\-]{35}'; then
+  echo "⛔ HATA: Staged değişikliklerde Google API Key (AIza...) tespit edildi!"
+  echo "   lib/firebase_options.dart içine hardcoded key koymayın."
+  echo "   --dart-define + .env.local kullanın (bkz. FIREBASE_SETUP.md)."
+  exit 1
+fi
+
+exit 0
