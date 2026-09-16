@@ -43,14 +43,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# Firebase / Google secrets - NEVER commit real keys
-# These files contain Google API keys and trigger GitHub secret-scanning.
-# Real files stay ONLY on your local machine. Repo'da sadece *.example şablonlar olur.
-android/app/google-services.json
-ios/Runner/GoogleService-Info.plist
-macos/Runner/GoogleService-Info.plist
-.firebase_cache/
-.env
-.env.local
-.env.*.local

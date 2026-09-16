@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "YOUR_PROJECT_NUMBER",
-    "project_id": "YOUR_PROJECT_ID",
-    "storage_bucket": "YOUR_PROJECT_ID.firebasestorage.app"
+    "project_number": "912252919494",
+    "project_id": "ulakchatapp-3198a",
+    "storage_bucket": "ulakchatapp-3198a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "YOUR_ANDROID_APP_ID",
+        "mobilesdk_app_id": "1:912252919494:android:6e85121b12bec2b16c01c7",
         "android_client_info": {
           "package_name": "com.example.ulakchatapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "YOUR_ANDROID_API_KEY_FROM_CONSOLE"
+          "current_key": "AIzaSyAhqjOXt12d7zyZ96TwrSW_xpLprAHcRSA"
         }
       ],
       "services": {

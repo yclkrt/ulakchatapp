@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>YOUR_IOS_API_KEY_FROM_CONSOLE</string>
+	<string>AIzaSyDZL9Thy4Fbha6krMGJozPL0n1UZjgAKao</string>
 	<key>GCM_SENDER_ID</key>
-	<string>YOUR_SENDER_ID</string>
+	<string>912252919494</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.ulakchatapp</string>
 	<key>PROJECT_ID</key>
-	<string>YOUR_PROJECT_ID</string>
+	<string>ulakchatapp-3198a</string>
 	<key>STORAGE_BUCKET</key>
-	<string>YOUR_PROJECT_ID.firebasestorage.app</string>
+	<string>ulakchatapp-3198a.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>YOUR_IOS_APP_ID</string>
+	<string>1:912252919494:ios:5023ec09ffad64fa6c01c7</string>
 </dict>
 </plist>
