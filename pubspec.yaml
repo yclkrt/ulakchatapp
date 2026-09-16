@@ -43,7 +43,6 @@ dependencies:
   animated_toggle_switch: ^0.8.7
   firebase_core: ^4.15.0
   firebase_auth: ^6.7.0
-  firebase_app_check: ^0.4.8
   
 
 dev_dependencies:

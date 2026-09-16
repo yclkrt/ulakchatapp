@@ -75,56 +75,6 @@ flutter build ios --dart-define-from-file=.env.local
 
 `.env.local` dosyası `.gitignore`'da olduğu için ASLA push'lanmaz.
 
-## 2b. App Check kurulumu (Firebase Console'da 10 dakika)
-
-Kod tarafı hazır (`firebase_app_check` paketi + `main.dart` içinde
-`_activateAppCheck()`). Şimdi Console tarafını yap:
-
-### Adım 1 — Sağlayıcıları kaydet (uygulama başına 1 kez)
-
-Firebase Console → **App Check** sayfasına git:
-
-| Platform | Apps sekmesinde uygulamayı seç → sağlayıcı |
-|---|---|
-| Android (`com.example.ulakchatapp`) | **Play Integrity** |
-| iOS (`com.example.ulakchatapp`) | **App Attest** (desteklenmeyen cihazlar için **DeviceCheck** fallback kodda hazır) |
-| macOS | **DeviceCheck** |
-| Web (kullanıyorsan) | **reCAPTCHA v3** → sana bir **site key** verir, onu `.env.local` içine `APP_CHECK_WEB_SITE_KEY` olarak yaz (secret değil, sitede görünür) |
-
-### Adım 2 — Debug token (kendi cihazında/emülatörde test için)
-
-Gerçek cihaz doğrulaması (Play Integrity / App Attest) emülatörde ve
-debug build'de ÇALIŞMAZ. Bu yüzden:
-
-1. Uygulamayı bir kez `--dart-define-from-file=.env.local` ile çalıştır,
-   log'larda şuna benzer bir satır görürsün
-   (debug provider otomatik bir secret üretir).
-2. Firebase Console → **App Check → Apps → senin uygulaman → overflow menü
-   (⋮) → Manage debug tokens → Add debug token** → log'daki değeri yapıştır.
-3. O değeri `.env.local` içine `APP_CHECK_DEBUG_TOKEN` olarak da yaz
-   (`.env.example`'da alanı hazır). Artık debug çalışmalarda App Check
-   doğrulanır.
-
-Windows'ta debug token ZORUNLUDUR (başka provider yok) — aynı adımla ekle.
-
-### Adım 3 — Zorunlu yap (enforcement)
-
-Her şey çalışıyor, login/register sorunsuz ise:
-
-Firebase Console → **App Check → APIs** (veya ilgili ürün: Auth,
-Firestore, Storage) → **Enforce**'u aç.
-
-ÖNEMLİ: Enforcement'ı açmadan önce debug token'ını eklediğinden emin ol,
-yoksa kendi debug build'in bile reddedilir. Önce monitor modda
-(request sayıları App Check konsolunda görünür), sonra enforce.
-
-### Adım 4 — Sahte istemci testi
-
-- Yanlış/eksik token ile istek atan bir istemci → `401 / permission-denied`.
-- Enforcement kapalıyken metrikleri izle: **App Check → Metrics**.
-- Release build'de log'larda `✅ App Check (Android Play Integrity) aktif.`
-  gibi satırları görmelisin.
-
 ## 3. Neden `lib/firebase_options.dart` içinde key yok?
 
 Eski dosyada key'ler hardcoded'tu, GitHub 3 tane "Google API Key" alert'i verdi.
