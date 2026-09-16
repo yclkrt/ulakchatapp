@@ -37,5 +37,11 @@
   "please_enter_your_first_and_last_name": "Lütfen adınızı ve soyadınızı giriniz",
   "please_set_a_password": "Lütfen şifre belirleyin",
   "password_repeat": "Şifre Tekrar",
-  "password_do_not_match": "Şifreler Eşleşmiyor"
+  "password_do_not_match": "Şifreler Eşleşmiyor",
+  "reset_link_set": "Sıfırlama Bağlantısı Gönderildi",
+  "we_have_sent_the_link_to_the_address_below_you_can_create_your_new_password_by_clicking_the_link": "Bağlantıyı aşağıdaki adrese gönderdik. Bağlantıya tıklayarak yeni şifreni oluşturabilirsin.",
+  "if_you_dont_see_it_in_your_inbox_check_your_spam_folder_too": "Gelen kutunda göremiyorsan Spam klasörüne de bak.",
+  "ok": "Tamam",
+  "try_a_different_email_address": "Farklı bir e-posta dene",
+  "email_sent": "E-posta Gönderildi"
 }

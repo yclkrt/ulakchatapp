@@ -37,5 +37,11 @@
   "please_enter_your_first_and_last_name": "Please enter your first and last name",
   "please_set_a_password": "Please set a password",
   "password_repeat": "Password Repeat",
-  "password_do_not_match": "Password do not match"
+  "password_do_not_match": "Password do not match",
+  "reset_link_set": "Reset Link Set",
+  "we_have_sent_the_link_to_the_address_below_you_can_create_your_new_password_by_clicking_the_link": "We have sent the link to the address below. You can create your new password by clicking the link.",
+  "if_you_dont_see_it_in_your_inbox_check_your_spam_folder_too": "If you don't see it in your inbox, check your spam folder too.",
+  "ok": "Ok",
+  "try_a_different_email_address": "try a different email address",
+  "email_sent": "Email Sent"
 }

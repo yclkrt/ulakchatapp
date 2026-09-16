@@ -13,6 +13,7 @@ import 'package:ulakchatapp/core/features/auth/widgets/auth_sign_up_fields.dart'
 import 'package:ulakchatapp/core/features/auth/widgets/auth_social_row.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_tab_switcher.dart';
 import 'package:ulakchatapp/core/features/auth/widgets/auth_text_field.dart';
+import 'package:ulakchatapp/core/features/auth/widgets/password_reset_sent_dialog.dart';
 
 import '../../../router/app_router.dart';
 import '../../../theme/app_colors.dart';
@@ -163,15 +164,13 @@ class _LoginPageState extends ConsumerState<LoginPage>
         );
         return;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Sıfırlama bağlantısı $email adresine gönderildi.'),
-          backgroundColor: AppColors.primary,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+      if (!mounted) return;
+      await PasswordResetSentDialog.show(
+        context,
+        email.trim(),
+        onRetry: () {
+          if (mounted) _showForgotPasswordDialog();
+        },
       );
     } catch (e) {
       if (!mounted) return;
