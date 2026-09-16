@@ -1,3 +1,4 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lingo_easy/lingo_easy.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
@@ -24,7 +25,7 @@ class ProfileCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(context.r(24)),
         border: Border.all(
           color: isDark
               ? Colors.white.withValues(alpha: 0.06)
@@ -34,17 +35,17 @@ class ProfileCard extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
             blurRadius: 24,
-            offset: const Offset(0, 10),
+            offset: Offset(context.w(0), context.h(10)),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(18),
+      padding: EdgeInsets.all(context.w(18)),
       child: Row(
         children: [
           Stack(
             children: [
               Container(
-                padding: const EdgeInsets.all(3),
+                padding: EdgeInsets.all(context.w(3)),
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
@@ -54,14 +55,14 @@ class ProfileCard extends StatelessWidget {
                   ),
                 ),
                 child: CircleAvatar(
-                  radius: 30,
+                  radius: context.r(30),
                   backgroundColor: isDark
                       ? AppColors.darkCard
                       : AppColors.lightBackground,
                   child: Text(
                     initial,
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: TextStyle(
+                      fontSize: context.sp(24),
                       fontWeight: FontWeight.w800,
                       color: AppColors.primary,
                     ),
@@ -72,18 +73,18 @@ class ProfileCard extends StatelessWidget {
                 right: 2,
                 bottom: 2,
                 child: Container(
-                  width: 16,
-                  height: 16,
+                  width: context.w(16),
+                  height: context.h(16),
                   decoration: BoxDecoration(
                     color: AppColors.onlineStatus,
                     shape: BoxShape.circle,
-                    border: Border.all(color: cardColor, width: 2.5),
+                    border: Border.all(color: cardColor, width: context.w(2.5)),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(width: 14),
+          SizedBox(width: context.w(14)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,28 +93,28 @@ class ProfileCard extends StatelessWidget {
                   displayName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 17,
+                  style: TextStyle(
+                    fontSize: context.sp(17),
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 3),
+                SizedBox(height: context.h(3)),
                 if (email.isNotEmpty)
                   Text(
                     email,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: context.sp(13),
                       color: sub,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                const SizedBox(height: 7),
+                SizedBox(height: context.h(7)),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 9,
-                    vertical: 4,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.w(9),
+                    vertical: context.h(4),
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.onlineStatus.withValues(alpha: 0.12),
@@ -123,18 +124,18 @@ class ProfileCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: 6,
-                        height: 6,
+                        width: context.w(6),
+                        height: context.h(6),
                         decoration: const BoxDecoration(
                           color: AppColors.onlineStatus,
                           shape: BoxShape.circle,
                         ),
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: context.w(6)),
                       Text(
                         context.ln('online'),
-                        style: const TextStyle(
-                          fontSize: 11.5,
+                        style: TextStyle(
+                          fontSize: context.sp(11.5),
                           fontWeight: FontWeight.w700,
                           color: AppColors.onlineStatus,
                         ),
@@ -150,30 +151,30 @@ class ProfileCard extends StatelessWidget {
               gradient: const LinearGradient(
                 colors: [AppColors.primary, AppColors.primaryLight],
               ),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(context.r(14)),
               boxShadow: [
                 BoxShadow(
                   color: AppColors.primary.withValues(alpha: 0.35),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+                  blurRadius: context.r(12),
+                  offset: Offset(context.w(0), context.h(4)),
                 ),
               ],
             ),
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(context.r(14)),
                 onTap: onEditTap,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 13,
-                    vertical: 9,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.w(13),
+                    vertical: context.h(9),
                   ),
                   child: Text(
                     context.ln('edit'),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 13,
+                      fontSize: context.sp(13),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
