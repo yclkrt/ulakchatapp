@@ -94,6 +94,7 @@ class SettingsHeader extends StatelessWidget {
                       ],
                     ),
                   ),
+                  /*
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.2),
@@ -107,6 +108,7 @@ class SettingsHeader extends StatelessWidget {
                       ),
                     ),
                   ),
+                  */
                 ],
               ),
             ),

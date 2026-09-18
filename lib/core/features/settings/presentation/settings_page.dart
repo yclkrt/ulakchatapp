@@ -300,7 +300,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         title: context.ln('about'),
                         subtitle:
                             '${context.ln('version')} ${context.ln('version_number')}',
-                        onTap: () => showAboutSheet(context),
+                        onTap: () => 'soon',
                       ),
                     ],
                   ),
@@ -348,29 +348,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: context.h(22)),
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          context.ln('app_name'),
-                          style: TextStyle(
-                            fontSize: context.sp(13),
-                            fontWeight: FontWeight.w800,
-                            color: sub,
-                          ),
-                        ),
-                        SizedBox(height: context.h(2)),
-                        Text(
-                          '${context.ln('version')} ${context.ln('version_number')}',
-                          style: TextStyle(
-                            fontSize: context.sp(11.5),
-                            color: sub.withValues(alpha: 0.75),
-                          ),
-                        ),
-                      ],
                     ),
                   ),
                   SizedBox(height: context.h(28)),
