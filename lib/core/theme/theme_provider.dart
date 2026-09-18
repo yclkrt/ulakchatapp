@@ -16,6 +16,11 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 }
 
 /// Provider for accessing and changing the current ThemeMode.
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((
+  ref,
+) {
   return ThemeModeNotifier();
 });
+
+// liquid glass bottom menü saydamlık değeri
+final glassOpacityProvider = StateProvider<double>((ref) => 0.19);

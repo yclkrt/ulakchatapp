@@ -1,3 +1,4 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lingo_easy/lingo_easy.dart';
@@ -6,7 +7,6 @@ import 'package:ulakchatapp/core/features/chats/widgets/chat_list_tile.dart';
 import 'package:ulakchatapp/core/features/chats/widgets/chats_empty_state.dart';
 import 'package:ulakchatapp/core/features/chats/widgets/chats_header.dart';
 import 'package:ulakchatapp/core/features/chats/widgets/chats_search_bar.dart';
-import 'package:ulakchatapp/core/features/chats/widgets/new_chat_button.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
 
 class ChatsPage extends ConsumerStatefulWidget {
@@ -24,8 +24,6 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
     _searchCtrl.dispose();
     super.dispose();
   }
-
-  void _onNewChat() {}
 
   void _onChatTap(String id) {}
 
@@ -131,9 +129,10 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
                 ),
               ),
             ),
+          //? bottom menü height
+          SliverToBoxAdapter(child: SizedBox(height: context.h(50))),
         ],
       ),
-      floatingActionButton: NewChatButton(onPressed: _onNewChat),
     );
   }
 }

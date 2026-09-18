@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +23,8 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
+  // 👈 Yerel değişken kaldırıldı; artık glassOpacityProvider kullanılıyor.
+
   Future<void> _signOut() async {
     final ok = await showSignOutDialog(context);
     if (ok == true) {
@@ -62,6 +66,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 👈 Provider'dan saydamlık değerini oku.
+    // Slider değiştiğinde bu değer güncellenir ve MainScreen'deki
+    // LiquidGlassNavbar otomatik olarak yeniden oluşturulur.
+    final glassOpacity = ref.watch(glassOpacityProvider);
+
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = ref.watch(authStateChangesProvider).valueOrNull;
     final themeMode = ref.watch(themeModeProvider);
@@ -89,8 +98,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 Positioned(
                   left: 20,
                   right: 20,
-                  // Header'ın alt padding'i (74) - kartın taşma miktarı
-                  // Kart header'ın üzerine biner, tamamı görünür.
                   bottom: -52,
                   child: ProfileCard(
                     displayName: name,
@@ -102,7 +109,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ],
             ),
           ),
-          // Stack'teki taşan kart için boşluk (52 taşma + 22 nefes).
           SliverToBoxAdapter(child: SizedBox(height: context.h(74))),
           SliverToBoxAdapter(
             child: Padding(
@@ -278,6 +284,69 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                     ],
                   ),
+                  if (Platform.isIOS) ...[
+                    SizedBox(height: context.h(20)),
+                    SectionLabel(
+                      title: context.ln('application_menu_settings'),
+                    ),
+                    SettingsGroup(
+                      cardColor: card,
+                      isDark: isDark,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: context.w(16),
+                            vertical: context.h(8),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Bottom Menü Saydamlığı',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: isDark
+                                          ? Colors.white70
+                                          : Colors.black87,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${(glassOpacity * 100).toInt()}%',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: isDark
+                                          ? Colors.white38
+                                          : Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Slider(
+                                value: glassOpacity,
+                                min: 0.03,
+                                max: 0.50,
+                                divisions: 10,
+                                activeColor: Colors.blue,
+                                onChanged: (value) {
+                                  // 👈 setState yerine provider'ı güncelle.
+                                  // Bu değişiklik MainScreen'deki
+                                  // LiquidGlassNavbar'ı otomatik olarak yeniler.
+                                  ref
+                                          .read(glassOpacityProvider.notifier)
+                                          .state =
+                                      value;
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                   SizedBox(height: context.h(20)),
                   SectionLabel(title: context.ln('support')),
                   SettingsGroup(
@@ -350,11 +419,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: context.h(28)),
+                  //SizedBox(height: context.h(28)),
                 ],
               ),
             ),
           ),
+          //? bottom menü height
+          SliverToBoxAdapter(child: SizedBox(height: context.h(140))),
         ],
       ),
     );

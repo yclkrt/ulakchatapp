@@ -10,6 +10,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import '../features/chats/presentation/chats_page.dart';
 import '../features/settings/presentation/settings_page.dart';
 import '../theme/app_colors.dart';
+import '../theme/theme_provider.dart'; // 👈 glassOpacityProvider için
 
 /// Platforma duyarli ana ekran:
 /// - iOS     -> Liquid Glass bottom menu
@@ -27,8 +28,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   static bool get _isIOS {
     if (kIsWeb) return false;
-    // defaultTargetPlatform iOS simulator/device'da dogru calisir,
-    // dart:io kullanmadan web uyumlulugu korunur.
     return defaultTargetPlatform == TargetPlatform.iOS;
   }
 
@@ -53,23 +52,30 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Widget _buildIOS(BuildContext context) {
     const pages = [ChatsPage(), SettingsPage()];
 
-    // glass_liquid_navbar otomatik light/dark algilar; marka rengine
-    // uydurmak icin sadece secili/indicator renklerini eziyoruz.
+    // 👈 Provider'dan saydamlık değerini oku.
+    // Ayar sayfasında slider değiştiğinde bu değer otomatik güncellenir
+    // ve LiquidGlassNavbar yeniden oluşturulur.
+    final glassOpacity = ref.watch(glassOpacityProvider);
+
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final theme = isDark
-        ? LiquidGlassTheme.dark().copyWith(
-            selectedColor: Colors.white,
-            indicatorColor: AppColors.primary.withValues(alpha: 0.35),
-          )
-        : LiquidGlassTheme.light().copyWith(
-            selectedColor: AppColors.primaryDark,
-            unselectedColor: AppColors.lightTextSecondary,
-            indicatorColor: AppColors.primary.withValues(alpha: 0.16),
-          );
+    final baseTheme = isDark
+        ? LiquidGlassTheme.dark()
+        : LiquidGlassTheme.light();
+
+    final theme = baseTheme.copyWith(
+      // 👈 Saydamlığı provider'dan gelen değerle override et.
+      glassColor: (isDark ? Colors.white : Colors.white).withValues(
+        alpha: glassOpacity,
+      ),
+      selectedColor: isDark ? Colors.white : AppColors.primaryDark,
+      unselectedColor: isDark ? Colors.white70 : AppColors.lightTextSecondary,
+      indicatorColor: isDark
+          ? AppColors.primary.withValues(alpha: 0.35)
+          : AppColors.primary.withValues(alpha: 0.16),
+    );
 
     return Scaffold(
-      // Icerik cam barin arkasinda devam etsin (paket dokumani zorunlu tutar).
-      extendBody: false,
+      extendBody: true,
       body: IndexedStack(index: _iosIndex, children: pages),
       bottomNavigationBar: LiquidGlassNavbar(
         currentIndex: _iosIndex,
@@ -96,9 +102,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
     return PersistentTabView(
       controller: _androidController,
-      // Floating görünüm: bar kenarlardan ve alttan nefes alır,
-      // böylece jest çubuğuna yapışık durmaz.
-      //margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       tabs: [
         PersistentTabConfig(
           screen: const ChatsPage(),
@@ -137,7 +140,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       ],
       navBarBuilder: (navBarConfig) => Style4BottomNavBar(
         navBarConfig: navBarConfig,
-        // İçerik yüksekliği: ikon + yazı rahat nefes alır.
         height: context.w(76),
         navBarDecoration: NavBarDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
@@ -145,7 +147,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             topLeft: Radius.circular(context.r(24)),
             topRight: Radius.circular(context.r(24)),
           ),
-          // Üstteki ince çizgiyi kaldırıp floating karta uygun gölge verdik.
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.12),
