@@ -1,3 +1,4 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,7 +68,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
     return Scaffold(
       // Icerik cam barin arkasinda devam etsin (paket dokumani zorunlu tutar).
-      extendBody: true,
+      extendBody: false,
       body: IndexedStack(index: _iosIndex, children: pages),
       bottomNavigationBar: LiquidGlassNavbar(
         currentIndex: _iosIndex,
@@ -94,6 +95,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
     return PersistentTabView(
       controller: _androidController,
+      // Floating görünüm: bar kenarlardan ve alttan nefes alır,
+      // böylece jest çubuğuna yapışık durmaz.
+      //margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       tabs: [
         PersistentTabConfig(
           screen: const ChatsPage(),
@@ -101,6 +105,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             icon: const Icon(Icons.chat_bubble_rounded),
             inactiveIcon: const Icon(Icons.chat_bubble_outline_rounded),
             title: context.ln('chats'),
+            iconSize: context.w(26),
+            textStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: context.sp(12),
+            ),
             activeForegroundColor: AppColors.primary,
             inactiveForegroundColor: isDark
                 ? AppColors.darkTextSecondary
@@ -113,6 +122,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             icon: const Icon(Icons.settings_rounded),
             inactiveIcon: const Icon(Icons.settings_outlined),
             title: context.ln('settings'),
+            iconSize: context.w(26),
+            textStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: context.sp(12),
+            ),
             activeForegroundColor: AppColors.primary,
             inactiveForegroundColor: isDark
                 ? AppColors.darkTextSecondary
@@ -122,13 +136,27 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       ],
       navBarBuilder: (navBarConfig) => Style4BottomNavBar(
         navBarConfig: navBarConfig,
+        // İçerik yüksekliği: ikon + yazı rahat nefes alır.
+        height: context.w(76),
         navBarDecoration: NavBarDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(context.r(24)),
+            topRight: Radius.circular(context.r(24)),
+          ),
+          // Üstteki ince çizgiyi kaldırıp floating karta uygun gölge verdik.
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.12),
+              blurRadius: context.r(20),
+              offset: Offset(0, context.r(8)),
+            ),
+          ],
         ),
       ),
-      backgroundColor:
-          isDark ? AppColors.darkBackground : AppColors.lightBackground,
+      backgroundColor: isDark
+          ? AppColors.darkBackground
+          : AppColors.lightBackground,
     );
   }
 }
