@@ -43,6 +43,7 @@ dependencies:
   firebase_core: ^4.15.0
   firebase_auth: ^6.7.0
   glass_liquid_navbar: ^0.2.0
+  icon_plus: ^0.1.1
   
 
 dev_dependencies:

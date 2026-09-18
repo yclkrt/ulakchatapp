@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:glass_liquid_navbar/glass_liquid_navbar.dart';
+import 'package:icon_plus/icon_plus.dart';
 import 'package:lingo_easy/lingo_easy.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
@@ -76,13 +77,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         theme: theme,
         items: [
           LiquidNavItem(
-            icon: Icons.chat_bubble_outline_rounded,
-            activeIcon: Icons.chat_bubble_rounded,
+            icon: FontAwesome.comments,
+            activeIcon: FontAwesome.comments_solid,
             label: context.ln('chats'),
           ),
           LiquidNavItem(
-            icon: Icons.settings_outlined,
-            activeIcon: Icons.settings_rounded,
+            icon: HeroIcons.cog,
+            activeIcon: HeroIcons.cog,
             label: context.ln('settings'),
           ),
         ],
@@ -102,8 +103,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         PersistentTabConfig(
           screen: const ChatsPage(),
           item: ItemConfig(
-            icon: const Icon(Icons.chat_bubble_rounded),
-            inactiveIcon: const Icon(Icons.chat_bubble_outline_rounded),
+            icon: const Icon(FontAwesome.comments_solid),
+            inactiveIcon: const Icon(FontAwesome.comments),
             title: context.ln('chats'),
             iconSize: context.w(26),
             textStyle: TextStyle(
@@ -119,8 +120,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         PersistentTabConfig(
           screen: const SettingsPage(),
           item: ItemConfig(
-            icon: const Icon(Icons.settings_rounded),
-            inactiveIcon: const Icon(Icons.settings_outlined),
+            icon: const Icon(HeroIcons.cog),
+            inactiveIcon: const Icon(HeroIcons.cog),
             title: context.ln('settings'),
             iconSize: context.w(26),
             textStyle: TextStyle(
