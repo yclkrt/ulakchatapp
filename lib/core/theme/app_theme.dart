@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
-/// AppTheme defines both Light and Dark Themes for UlakChat.
+/// AppTheme defines both Light and Dark Themes for UlakChat (Material & Cupertino).
 class AppTheme {
   AppTheme._();
 
@@ -144,6 +145,32 @@ class AppTheme {
       dividerTheme: const DividerThemeData(
         color: AppColors.darkDivider,
         thickness: 1,
+      ),
+    );
+  }
+
+  /// iOS Cupertino Light Theme
+  static CupertinoThemeData get cupertinoLightTheme {
+    return const CupertinoThemeData(
+      brightness: Brightness.light,
+      primaryColor: AppColors.primary,
+      scaffoldBackgroundColor: AppColors.lightBackground,
+      barBackgroundColor: AppColors.lightSurface,
+      textTheme: CupertinoTextThemeData(
+        primaryColor: AppColors.lightTextPrimary,
+      ),
+    );
+  }
+
+  /// iOS Cupertino Dark Theme
+  static CupertinoThemeData get cupertinoDarkTheme {
+    return const CupertinoThemeData(
+      brightness: Brightness.dark,
+      primaryColor: AppColors.primary,
+      scaffoldBackgroundColor: AppColors.darkBackground,
+      barBackgroundColor: AppColors.darkSurface,
+      textTheme: CupertinoTextThemeData(
+        primaryColor: AppColors.darkTextPrimary,
       ),
     );
   }

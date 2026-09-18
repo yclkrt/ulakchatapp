@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -294,49 +296,108 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       isDark: isDark,
                       children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: context.w(16),
-                            vertical: context.h(8),
+                          padding: EdgeInsets.fromLTRB(
+                            context.w(16),
+                            context.h(14),
+                            context.w(16),
+                            context.h(8),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Bottom Menü Saydamlığı',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: isDark
-                                          ? Colors.white70
-                                          : Colors.black87,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${(glassOpacity * 100).toInt()}%',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: isDark
-                                          ? Colors.white38
-                                          : Colors.black54,
-                                    ),
-                                  ),
-                                ],
+                              IconBadge(
+                                icon: CupertinoIcons.sparkles,
+                                bg: AppColors.primary.withValues(alpha: 0.12),
+                                fg: AppColors.primary,
                               ),
-                              Slider(
-                                value: glassOpacity,
-                                min: 0.03,
-                                max: 0.50,
-                                divisions: 10,
-                                activeColor: Colors.blue,
-                                onChanged: (value) {
-                                  // 👈 Saydamlığı güncelle ve SharedPreferences'a kaydet.
-                                  ref
-                                      .read(glassOpacityProvider.notifier)
-                                      .setOpacity(value);
-                                },
+                              SizedBox(width: context.w(13)),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Liquid Glass Menü',
+                                      style: TextStyle(
+                                        fontSize: context.sp(15),
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Bottom menü saydamlık derecesi',
+                                      style: TextStyle(
+                                        fontSize: context.sp(12.5),
+                                        color: sub,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: context.w(10),
+                                  vertical: context.h(5),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? Colors.white.withValues(alpha: 0.08)
+                                      : AppColors.primary.withValues(
+                                          alpha: 0.08,
+                                        ),
+                                  borderRadius: BorderRadius.circular(
+                                    context.r(99),
+                                  ),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? Colors.white.withValues(alpha: 0.08)
+                                        : AppColors.primary.withValues(
+                                            alpha: 0.15,
+                                          ),
+                                  ),
+                                ),
+                                child: Text(
+                                  '%${(glassOpacity * 100).toInt()}',
+                                  style: TextStyle(
+                                    fontSize: context.sp(12.5),
+                                    fontWeight: FontWeight.w800,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            context.w(16),
+                            context.h(2),
+                            context.w(16),
+                            context.h(14),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                CupertinoIcons.circle,
+                                size: context.w(15),
+                                color: sub.withValues(alpha: 0.6),
+                              ),
+                              SizedBox(width: context.w(6)),
+                              Expanded(
+                                child: AdaptiveSlider(
+                                  value: glassOpacity,
+                                  min: 0.0,
+                                  max: 0.50,
+                                  activeColor: AppColors.primary,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(glassOpacityProvider.notifier)
+                                        .setOpacity(value);
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: context.w(6)),
+                              Icon(
+                                CupertinoIcons.circle_fill,
+                                size: context.w(17),
+                                color: sub.withValues(alpha: 0.9),
                               ),
                             ],
                           ),

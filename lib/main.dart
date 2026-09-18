@@ -1,4 +1,6 @@
+import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lingo_easy/lingo_easy.dart';
@@ -56,9 +58,7 @@ void main() async {
 
   runApp(
     ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-      ],
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: LingoWrapper(
@@ -125,8 +125,7 @@ class _MissingFirebaseConfigApp extends StatelessWidget {
               ExpansionTile(
                 title: const Text('Teknik detay'),
                 children: [
-                  SelectableText(details,
-                      style: const TextStyle(fontSize: 12)),
+                  SelectableText(details, style: const TextStyle(fontSize: 12)),
                 ],
               ),
             ],
@@ -166,8 +165,7 @@ class _FirebaseErrorApp extends StatelessWidget {
               ExpansionTile(
                 title: const Text('Teknik detay'),
                 children: [
-                  SelectableText(details,
-                      style: const TextStyle(fontSize: 12)),
+                  SelectableText(details, style: const TextStyle(fontSize: 12)),
                 ],
               ),
             ],
@@ -186,13 +184,24 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final themeMode = ref.watch(themeModeProvider);
 
-    return MaterialApp.router(
+    return AdaptiveApp.router(
       title: 'UlakChat',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode,
       routerConfig: router,
+      themeMode: themeMode,
+      materialLightTheme: AppTheme.lightTheme,
+      materialDarkTheme: AppTheme.darkTheme,
+      cupertinoLightTheme: AppTheme.cupertinoLightTheme,
+      cupertinoDarkTheme: AppTheme.cupertinoDarkTheme,
+      builder: (context, child) => ScaffoldMessenger(child: child!),
+      localizationsDelegates: const [
+        DefaultMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],
+      material: (context, platform) =>
+          const MaterialAppData(debugShowCheckedModeBanner: false),
+      cupertino: (context, platform) =>
+          const CupertinoAppData(debugShowCheckedModeBanner: false),
     );
   }
 }
