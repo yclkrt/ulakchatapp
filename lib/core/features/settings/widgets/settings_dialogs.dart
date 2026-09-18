@@ -195,28 +195,17 @@ void showAboutSheet(BuildContext context) {
           ),
           SizedBox(height: context.h(20)),
           Container(
-            width: context.w(72),
-            height: context.h(72),
+            width: double.infinity,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.primary, AppColors.primaryLight],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
               borderRadius: BorderRadius.circular(context.r(22)),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primary.withValues(alpha: 0.35),
-                  blurRadius: context.r(20),
-                  offset: Offset(0, context.h(8)),
-                ),
-              ],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(context.r(22)),
               child: Image.asset(
                 'assets/images/app_logo.png',
-                fit: BoxFit.cover,
+                width: context.w(100),
+                height: context.h(100),
+                fit: BoxFit.contain,
                 errorBuilder: (_, e, s) => Icon(
                   Icons.chat_bubble_rounded,
                   color: Colors.white,
