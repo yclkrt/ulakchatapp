@@ -246,7 +246,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                             ),
                           ),
                         ),
-                        onTap: () => showLanguageSheet(context),
+                        onTap: () => showLanguageSheet(context, ref),
                       ),
                     ],
                   ),
@@ -332,13 +332,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                                 divisions: 10,
                                 activeColor: Colors.blue,
                                 onChanged: (value) {
-                                  // 👈 setState yerine provider'ı güncelle.
-                                  // Bu değişiklik MainScreen'deki
-                                  // LiquidGlassNavbar'ı otomatik olarak yeniler.
+                                  // 👈 Saydamlığı güncelle ve SharedPreferences'a kaydet.
                                   ref
-                                          .read(glassOpacityProvider.notifier)
-                                          .state =
-                                      value;
+                                      .read(glassOpacityProvider.notifier)
+                                      .setOpacity(value);
                                 },
                               ),
                             ],

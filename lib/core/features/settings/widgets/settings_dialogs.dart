@@ -1,6 +1,8 @@
 import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lingo_easy/lingo_easy.dart';
+import 'package:ulakchatapp/core/providers/preferences_provider.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
 
 Future<bool?> showSignOutDialog(BuildContext context) {
@@ -93,7 +95,7 @@ Future<bool?> showSignOutDialog(BuildContext context) {
   );
 }
 
-void showLanguageSheet(BuildContext context) {
+void showLanguageSheet(BuildContext context, [WidgetRef? ref]) {
   final currentLang = context.currentLocale;
   final isDark = Theme.of(context).brightness == Brightness.dark;
   showModalBottomSheet(
@@ -142,6 +144,7 @@ void showLanguageSheet(BuildContext context) {
             value: 'tr',
             groupValue: currentLang,
             onTap: () {
+              ref?.read(appLanguageProvider.notifier).setLanguage('tr');
               context.setLocale('tr');
               Navigator.of(sheetCtx).pop();
             },
@@ -154,6 +157,7 @@ void showLanguageSheet(BuildContext context) {
             value: 'en',
             groupValue: currentLang,
             onTap: () {
+              ref?.read(appLanguageProvider.notifier).setLanguage('en');
               context.setLocale('en');
               Navigator.of(sheetCtx).pop();
             },

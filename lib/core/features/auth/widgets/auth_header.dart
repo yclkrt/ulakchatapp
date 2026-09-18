@@ -3,6 +3,7 @@ import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lingo_easy/lingo_easy.dart';
+import 'package:ulakchatapp/core/providers/preferences_provider.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
 
 class AuthHeader extends ConsumerWidget {
@@ -18,7 +19,7 @@ class AuthHeader extends ConsumerWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [_languageSwitch(currentLang, context)],
+          children: [_languageSwitch(currentLang, context, ref)],
         ),
         Container(
           width: context.w(84),
@@ -87,11 +88,15 @@ class AuthHeader extends ConsumerWidget {
   AnimatedToggleSwitch<String> _languageSwitch(
     String currentLang,
     BuildContext context,
+    WidgetRef ref,
   ) {
     return AnimatedToggleSwitch<String>.size(
       current: currentLang,
       values: const ['tr', 'en'],
-      onChanged: (lang) => context.setLocale(lang),
+      onChanged: (lang) {
+        ref.read(appLanguageProvider.notifier).setLanguage(lang);
+        context.setLocale(lang);
+      },
       height: context.h(36),
       indicatorSize: const Size.fromWidth(48),
       borderWidth: 1.0,

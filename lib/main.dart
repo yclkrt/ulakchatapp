@@ -2,14 +2,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lingo_easy/lingo_easy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulakchatapp/firebase_options.dart';
 
+import 'core/providers/preferences_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // SharedPreferences'ı başlat
+  final prefs = await SharedPreferences.getInstance();
+  final initialLocale = prefs.getString(AppPreferenceKeys.language) ?? 'tr';
 
   // ÖNCE native config dene (google-services.json / GoogleService-Info.plist).
   // Bu dosyalar sende yerelde var ve F5 / Xcode ile her zaman çalışır.
@@ -49,22 +55,25 @@ void main() async {
   }
 
   runApp(
-    const ProviderScope(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: LingoWrapper(
-          defaultLocale: 'tr',
-          supportedLocales: ['tr', 'en'],
+          defaultLocale: initialLocale,
+          supportedLocales: const ['tr', 'en'],
           assetsPath: 'assets/lang',
           // Lingo çevirileri yüklenirken gösterilen ekran.
           // ÖNEMLİ: Burada Scaffold KULLANMA! Çünkü bu aşamada henüz
           // MaterialApp/MediaQuery yok. Scaffold -> "No MediaQuery ancestor"
           // hatasıyla uygulamayı anında kapatır (iOS'ta siyah ekran + kapanma).
-          loadingWidget: Directionality(
+          loadingWidget: const Directionality(
             textDirection: TextDirection.ltr,
             child: Center(child: CircularProgressIndicator()),
           ),
-          child: MyApp(),
+          child: const MyApp(),
         ),
       ),
     ),
