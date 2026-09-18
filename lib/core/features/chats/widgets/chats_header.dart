@@ -1,3 +1,4 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lingo_easy/lingo_easy.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
@@ -9,6 +10,7 @@ class ChatsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -53,6 +55,7 @@ class ChatsHeader extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(22, 12, 22, 74),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Column(
@@ -112,6 +115,22 @@ class ChatsHeader extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      // Yeni sohbet akışı
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: EdgeInsets.all(context.w(16)),
+                      backgroundColor: isDark
+                          ? AppColors.darkCard.withValues(alpha: 0.7)
+                          : AppColors.primaryLight,
+                      foregroundColor: Colors.white,
+                      elevation: 10,
+                    ),
+                    child: Icon(Icons.add_rounded, size: context.w(26)),
                   ),
                 ],
               ),
