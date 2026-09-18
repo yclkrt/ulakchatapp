@@ -452,7 +452,9 @@ class _LoginPageState extends ConsumerState<LoginPage>
               return context.ln('please_enter_your_password');
             }
             if (val.length < 6) {
-              return context.ln('password_must_be_at_least_6_characters_long');
+              return context.ln(
+                'the_password_must_be_at_least_6_characters_long',
+              );
             }
             return null;
           },

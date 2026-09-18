@@ -1,3 +1,4 @@
+import 'package:dynamic_responsive_screen/dynamic_responsive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lingo_easy/lingo_easy.dart';
 import 'package:ulakchatapp/core/theme/app_colors.dart';
@@ -10,7 +11,7 @@ class SettingsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
             AppColors.primaryDark,
@@ -20,7 +21,9 @@ class SettingsHeader extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(context.r(32)),
+        ),
       ),
       child: Stack(
         children: [
@@ -28,8 +31,8 @@ class SettingsHeader extends StatelessWidget {
             right: -40,
             top: -30,
             child: Container(
-              width: 160,
-              height: 160,
+              width: context.w(160),
+              height: context.h(160),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.12),
                 shape: BoxShape.circle,

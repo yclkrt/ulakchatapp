@@ -49,60 +49,80 @@ class DefaultFirebaseOptions {
   static const String _storageBucket = 'ulakchatapp-3198a.firebasestorage.app';
   static const String _authDomain = 'ulakchatapp-3198a.firebaseapp.com';
 
-  static String _req(String name) {
-    const err =
-        'Missing --dart-define. FIREBASE_SETUP.md dosyasina bakip '
-        '.env.local olusturun veya launch.json ile calistirin.';
-    // NOT: `const` olamaz — name parametresi runtime'da geliyor.
-    // --dart-define değerleri yine de compile-time'da gömülür.
-    final v = String.fromEnvironment(name);
-    if (v.isEmpty) {
-      throw StateError('$name $err');
-    }
-    return v;
+  // KRİTİK DART KURALI: `String.fromEnvironment()` YALNIZCA const literal
+  // ile çağrıldığında derleyici tarafından doldurulur!
+  // Eski `_req(String name)` fonksiyonu parametreyle çağırıyordu
+  // (`String.fromEnvironment(name)`), bu yüzden HER ZAMAN "" dönüyordu
+  // ve uygulama sürekli "Firebase kurulumu eksik" ekranını gösteriyordu.
+  // Bu yüzden her getter kendi const key adını doğrudan yazar.
+  static Never _missing(String name) {
+    throw StateError(
+      '$name Missing --dart-define. FIREBASE_SETUP.md dosyasina bakip '
+      '.env.local olusturun veya launch.json ile calistirin.',
+    );
   }
 
-  static FirebaseOptions get web => FirebaseOptions(
-        apiKey: _req('FIREBASE_WEB_API_KEY'),
-        appId: '1:912252919494:web:a631ad4eee0bdf276c01c7',
-        messagingSenderId: _messagingSenderId,
-        projectId: _projectId,
-        authDomain: _authDomain,
-        storageBucket: _storageBucket,
-      );
+  static FirebaseOptions get web {
+    const opts = FirebaseOptions(
+      apiKey: String.fromEnvironment('FIREBASE_WEB_API_KEY'),
+      appId: '1:912252919494:web:a631ad4eee0bdf276c01c7',
+      messagingSenderId: _messagingSenderId,
+      projectId: _projectId,
+      authDomain: _authDomain,
+      storageBucket: _storageBucket,
+    );
+    if (opts.apiKey.isEmpty) _missing('FIREBASE_WEB_API_KEY');
+    return opts;
+  }
 
-  static FirebaseOptions get android => FirebaseOptions(
-        apiKey: _req('FIREBASE_ANDROID_API_KEY'),
-        appId: '1:912252919494:android:6e85121b12bec2b16c01c7',
-        messagingSenderId: _messagingSenderId,
-        projectId: _projectId,
-        storageBucket: _storageBucket,
-      );
+  static FirebaseOptions get android {
+    const opts = FirebaseOptions(
+      apiKey: String.fromEnvironment('FIREBASE_ANDROID_API_KEY'),
+      appId: '1:912252919494:android:6e85121b12bec2b16c01c7',
+      messagingSenderId: _messagingSenderId,
+      projectId: _projectId,
+      storageBucket: _storageBucket,
+    );
+    if (opts.apiKey.isEmpty) _missing('FIREBASE_ANDROID_API_KEY');
+    return opts;
+  }
 
-  static FirebaseOptions get ios => FirebaseOptions(
-        apiKey: _req('FIREBASE_IOS_API_KEY'),
-        appId: '1:912252919494:ios:5023ec09ffad64fa6c01c7',
-        messagingSenderId: _messagingSenderId,
-        projectId: _projectId,
-        storageBucket: _storageBucket,
-        iosBundleId: 'com.example.ulakchatapp',
-      );
+  static FirebaseOptions get ios {
+    const opts = FirebaseOptions(
+      apiKey: String.fromEnvironment('FIREBASE_IOS_API_KEY'),
+      appId: '1:912252919494:ios:5023ec09ffad64fa6c01c7',
+      messagingSenderId: _messagingSenderId,
+      projectId: _projectId,
+      storageBucket: _storageBucket,
+      iosBundleId: 'com.example.ulakchatapp',
+    );
+    if (opts.apiKey.isEmpty) _missing('FIREBASE_IOS_API_KEY');
+    return opts;
+  }
 
-  static FirebaseOptions get macos => FirebaseOptions(
-        apiKey: _req('FIREBASE_IOS_API_KEY'),
-        appId: '1:912252919494:ios:5023ec09ffad64fa6c01c7',
-        messagingSenderId: _messagingSenderId,
-        projectId: _projectId,
-        storageBucket: _storageBucket,
-        iosBundleId: 'com.example.ulakchatapp',
-      );
+  static FirebaseOptions get macos {
+    const opts = FirebaseOptions(
+      apiKey: String.fromEnvironment('FIREBASE_IOS_API_KEY'),
+      appId: '1:912252919494:ios:5023ec09ffad64fa6c01c7',
+      messagingSenderId: _messagingSenderId,
+      projectId: _projectId,
+      storageBucket: _storageBucket,
+      iosBundleId: 'com.example.ulakchatapp',
+    );
+    if (opts.apiKey.isEmpty) _missing('FIREBASE_IOS_API_KEY');
+    return opts;
+  }
 
-  static FirebaseOptions get windows => FirebaseOptions(
-        apiKey: _req('FIREBASE_WEB_API_KEY'),
-        appId: '1:912252919494:web:e16c6acd686770da6c01c7',
-        messagingSenderId: _messagingSenderId,
-        projectId: _projectId,
-        authDomain: _authDomain,
-        storageBucket: _storageBucket,
-      );
+  static FirebaseOptions get windows {
+    const opts = FirebaseOptions(
+      apiKey: String.fromEnvironment('FIREBASE_WEB_API_KEY'),
+      appId: '1:912252919494:web:e16c6acd686770da6c01c7',
+      messagingSenderId: _messagingSenderId,
+      projectId: _projectId,
+      authDomain: _authDomain,
+      storageBucket: _storageBucket,
+    );
+    if (opts.apiKey.isEmpty) _missing('FIREBASE_WEB_API_KEY');
+    return opts;
+  }
 }
